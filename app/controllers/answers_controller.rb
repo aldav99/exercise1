@@ -21,7 +21,6 @@ class AnswersController < ApplicationController
     @answer = @question.answers.build(answer_params)
 
     if @answer.save
-      # redirect_to question_answer_path(@answer)
       redirect_to @answer
     else
       render :new

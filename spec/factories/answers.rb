@@ -5,7 +5,9 @@ FactoryBot.define do
     correct { true }
   end
 
-  # factory :invalid_answer, class: "Answer" do
-  #   body { nil }
-  # end
+  factory :invalid_answer, class: "Answer" do
+    question
+    body { nil }
+    correct { nil }
+  end
 end

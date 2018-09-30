@@ -123,14 +123,16 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'DELETE #destroy' do
     sign_in_user
     before { question }
+    before { @user.questions << question }
     
     it 'deletes question' do
-      expect { delete :destroy, params: { id: question }}.to change(Question, :count).by(-1)
+      expect { delete :destroy, params: { id: question }}.to change(@user.questions, :count).by(-1)
     end
 
     it 'redirect to index view' do
       delete :destroy, params: { id: question }
-      expect(response).to redirect_to question_path
+      expect(response).to redirect_to root_path
     end
   end
 end
+

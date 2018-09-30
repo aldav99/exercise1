@@ -11,9 +11,17 @@ feature 'User sign in', %q{
 
   scenario "Registered user try to sign in" do
     sign_in(user)
-    
+
     expect(page).to have_content 'Signed in successfully.'
     expect(current_path).to eq root_path
+  end
+
+  scenario "Registered user try to sign OUT" do
+    sign_in(user)
+
+    click_on 'Log out'
+    
+    expect(page).to have_content 'Signed out successfully.'
   end
 
   scenario 'Non-registered user try to sign in' do
@@ -26,3 +34,4 @@ feature 'User sign in', %q{
     expect(current_path).to eq new_user_session_path
   end
 end
+

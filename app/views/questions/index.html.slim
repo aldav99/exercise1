@@ -1,1 +1,12 @@
 p= link_to 'Ask question', new_question_path
+p= link_to 'Log out', destroy_user_session_path, method: :delete
+
+table
+  tbody
+    - @questions.each do |question|
+      tr
+        td = question.body
+        td = link_to 'Add answer', question_path(question)
+        td = link_to 'Show answer',  question_answers_path(question)
+        td= link_to 'Delete question', question, :method => :delete, :data => {:confirm => 'Are you sure?'}
+

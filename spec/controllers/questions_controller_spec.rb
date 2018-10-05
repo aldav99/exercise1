@@ -62,7 +62,8 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
     context 'with valid attributes' do
       it 'saves the new question in the database' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+        expect { post :create, params: { question: attributes_for(:question) } }.to change(@user.questions, :count).by(1)
+        # expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
 
       it 'redirects to show view' do
@@ -110,7 +111,7 @@ RSpec.describe QuestionsController, type: :controller do
       
       it 'does not change question attributes' do
         question.reload
-        expect(question.title).to eq 'MyString'
+        expect(question.title).to match(/questionquestion/)
         expect(question.body).to eq 'MyText'
       end
 
@@ -121,17 +122,27 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    sign_in_user
-    before { question }
-    before { @user.questions << question }
+
+    before do
+      @author = create(:user_with_questions)
+      sign_in(@author)
+    end
+
     
     it 'deletes question' do
-      expect { delete :destroy, params: { id: question }}.to change(@user.questions, :count).by(-1)
+      expect { delete :destroy, params: { id: @author.questions[0] }}.to change(@author.questions, :count).by(-1)
     end
 
     it 'redirect to index view' do
-      delete :destroy, params: { id: question }
+      delete :destroy, params: { id: @author.questions[0] }
       expect(response).to redirect_to root_path
+    end
+
+    it "no deletes another user's question" do
+      @user = create(:user)
+      sign_in(@user)
+      @author_question = @author.questions[0]
+      expect { delete :destroy, params: { id: @author_question }}.to change(@author.questions, :count).by(0)
     end
   end
 end

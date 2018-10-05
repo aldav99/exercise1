@@ -1,7 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
-  before_action :author?, only: [:destroy]
   
   def index
     @questions = Question.all
@@ -37,7 +36,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if author?
+    if current_user.author_of?(@question)
       @question.destroy
       flash[:notice] = "The question is deleted!!!."
     else
@@ -50,10 +49,6 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.find(params[:id])
-  end
-
-  def author?
-    current_user == @question.user
   end
 
   def question_params

@@ -8,44 +8,6 @@ RSpec.describe AnswersController, type: :controller do
     @answers =  create_list(:answer, 2, question: @question) << @answer
   end
 
-  describe 'GET #index' do
-
-    before { get :index, params: { question_id: @question } }
-
-    it 'populates an array of all answers' do
-      expect(assigns(:answers)).to match_array(@answers)
-    end
-
-    it 'renders index view' do
-      expect(response).to render_template :index
-    end
-  end
-
-  describe 'GET #show' do
-
-    before { get :show, params: { question_id: @question, id: @answer } }
-
-    it 'assigns the requested answer to @answer' do
-      expect(assigns(:answer)).to eq @answer
-    end
-
-    it 'renders show view' do
-      expect(response).to render_template :show
-    end
-  end
-
-  describe 'GET #new' do
-    before { get :new, params: { question_id: @question } }
-
-    it 'assigns a new Answer to @answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'renders new view' do
-      expect(response).to render_template :new
-    end
-  end
-
   describe 'GET #edit' do
     
     before { get :edit, params: { question_id: @question, id: @answer } }
@@ -60,18 +22,17 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
-    before do
-      user = create(:user)
-      allow_any_instance_of(AnswersController).to receive(:current_user) { user }
-    end
+    sign_in_user
+
     context 'with valid attributes' do
       it 'saves the new answer in the database' do
-        expect { post :create, params: { user_id: @current_user, question_id: @question, answer: attributes_for(:answer) } }.to change(@question.answers, :count).by(1)
+        expect { post :create, params: { question_id: @question, answer: attributes_for(:answer) } }.to change(@question.answers, :count).by(1)
+        expect { post :create, params: { question_id: @question, answer: attributes_for(:answer) } }.to change(@user.answers, :count).by(1)
       end
 
       it 'redirects to show view' do
         post :create, params: { question_id: @question, answer: attributes_for(:answer) }
-        expect(response).to redirect_to question_answers_path
+        expect(response).to redirect_to question_path @question
       end
     end
 
@@ -82,7 +43,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-renders new view' do
         post :create, params: { question_id: @question, answer: attributes_for(:invalid_answer) }
-        expect(response).to render_template :new
+        expect(response).to redirect_to question_path @question
       end
     end
   end
@@ -112,7 +73,7 @@ RSpec.describe AnswersController, type: :controller do
       
       it 'does not change answer attributes' do
         @answer.reload
-        expect(@answer.body).to eq 'MyText'
+        expect(@answer.body).to match(/answeranswer/)
       end
 
       it 're-renders edit view' do
@@ -122,21 +83,26 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before do
-      @user = create(:user)
-      allow_any_instance_of(AnswersController).to receive(:current_user) { @user }
-    end
-
-    before { @answer }
-    before { @user.answers << @answer }
 
     it 'deletes answer' do
-      expect { delete :destroy, params: { id: @answer }}.to change(@user.answers, :count).by(-1)
+      @author = create(:user_with_answers)
+      sign_in @author
+      expect { delete :destroy, params: { id: @author.answers[0] }}.to change(@author.answers, :count).by(-1)
     end
 
     it 'redirect to index view' do
-      delete :destroy, params: { id: @answer }
-      expect(response).to redirect_to question_answers_path(@answer.question)
+      @author = create(:user_with_answers)
+      sign_in @author
+      delete :destroy, params: { id: @author.answers[0] }
+      expect(response).to redirect_to question_path(@author.answers[0].question)
+    end
+
+    sign_in_user
+
+    it "no deletes another user's answer" do
+      @author = create(:user_with_answers)
+      @author_answer = @author.answers[0]
+      expect { delete :destroy, params: { id: @author_answer }}.to change(@author.answers, :count).by(0)
     end
   end
 end

@@ -18,57 +18,28 @@ feature 'Create question', %q{
     fill_in 'Body', with: 'text text'
     click_on 'Create'
 
-    expect(page).to have_content 'Your question successfully created.'
+    expect(page).to have_content 'text text'
+
+    click_on 'Back'
+
+    expect(page).to have_content 'Test question'
+  end
+
+  scenario "Validation's error" do
+    sign_in(user)
+
+    visit questions_path
+    click_on 'Ask question'
+    fill_in 'Title', with: ''
+    fill_in 'Body', with: ''
+    click_on 'Create'
+
+    expect(page).to have_content "can't be blank"
   end
 
   scenario 'Non-authenticated user ties to create question' do
     visit questions_path
-    click_on 'Ask question'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
-  end
-
-  scenario 'Authenticated user view the questions list' do
-    sign_in(user)
-
-    visit questions_path
-  end
-
-  scenario 'Authenticated user create the answer' do
-    sign_in(user)
-
-
-    visit questions_path
-    click_on 'Ask question'
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'text text'
-    click_on 'Create'
-    
-    fill_in 'Body', with: 'Test answer'
-    fill_in 'Correct', with: true
-    click_on 'Create'
-
-    expect(page).to have_content 'Your answer successfully created.'
-  end
-
-  scenario 'Authenticated user is able to view questions and answers' do
-    sign_in(user)
-
-
-    visit questions_path
-
-    click_on 'Ask question'
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'text text'
-    click_on 'Create'
-
-    fill_in 'Body', with: 'Test answer'
-    fill_in 'Correct', with: true
-    click_on 'Create'
-
-    visit questions_path
-    click_on 'Show answer'
-
-    expect(page).to have_content 'Your question and answers'
+    expect(page).to have_no_content 'Ask question'
   end
 end

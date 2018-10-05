@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   # end
 
   resources :questions, shallow: true do
-    resources :answers, shallow: true
+    resources :answers
   end
 
   root to: "questions#index"

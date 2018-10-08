@@ -19,9 +19,6 @@ feature 'Create question', %q{
     click_on 'Create'
 
     expect(page).to have_content 'text text'
-
-    click_on 'Back'
-
     expect(page).to have_content 'Test question'
   end
 

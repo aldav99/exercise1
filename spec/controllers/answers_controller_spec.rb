@@ -25,8 +25,11 @@ RSpec.describe AnswersController, type: :controller do
     sign_in_user
 
     context 'with valid attributes' do
-      it 'saves the new answer in the database' do
+      it 'saves the new answer in the database (relationship belongs_to question)' do
         expect { post :create, params: { question_id: @question, answer: attributes_for(:answer) } }.to change(@question.answers, :count).by(1)
+      end
+
+      it 'saves the new answer in the database (relationship belongs_to user)' do
         expect { post :create, params: { question_id: @question, answer: attributes_for(:answer) } }.to change(@user.answers, :count).by(1)
       end
 
@@ -83,26 +86,34 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-
-    it 'deletes answer' do
+    before do
       @author = create(:user_with_answers)
-      sign_in @author
-      expect { delete :destroy, params: { id: @author.answers[0] }}.to change(@author.answers, :count).by(-1)
+      sign_in(@author)
     end
 
-    it 'redirect to index view' do
-      @author = create(:user_with_answers)
-      sign_in @author
-      delete :destroy, params: { id: @author.answers[0] }
-      expect(response).to redirect_to question_path(@author.answers[0].question)
+    context 'Author' do
+      it 'deletes answer' do
+        expect { delete :destroy, params: { id: @author.answers[0] }}.to change(@author.answers, :count).by(-1)
+      end
+
+      it 'redirect to index view' do
+        delete :destroy, params: { id: @author.answers[0] }
+        expect(response).to redirect_to question_path(@author.answers[0].question)
+      end
     end
 
-    sign_in_user
+    context 'Non Author' do
+      sign_in_user
 
-    it "no deletes another user's answer" do
-      @author = create(:user_with_answers)
-      @author_answer = @author.answers[0]
-      expect { delete :destroy, params: { id: @author_answer }}.to change(@author.answers, :count).by(0)
+      it "no deletes another user's answer" do
+        @author_answer = @author.answers[0]
+        expect { delete :destroy, params: { id: @author_answer }}.not_to change(@author.answers, :count)
+      end
+
+      it 'redirect to index view' do
+        delete :destroy, params: { id: @author.answers[0] }
+        expect(response).to redirect_to question_path(@author.answers[0].question)
+      end
     end
   end
 end

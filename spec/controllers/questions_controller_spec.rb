@@ -63,7 +63,6 @@ RSpec.describe QuestionsController, type: :controller do
     context 'with valid attributes' do
       it 'saves the new question in the database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(@user.questions, :count).by(1)
-        # expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
 
       it 'redirects to show view' do
@@ -128,21 +127,30 @@ RSpec.describe QuestionsController, type: :controller do
       sign_in(@author)
     end
 
-    
-    it 'deletes question' do
-      expect { delete :destroy, params: { id: @author.questions[0] }}.to change(@author.questions, :count).by(-1)
+    context 'Author' do
+      it 'deletes question' do
+        expect { delete :destroy, params: { id: @author.questions[0] }}.to change(@author.questions, :count).by(-1)
+      end
+
+      it 'redirect to index view' do
+        delete :destroy, params: { id: @author.questions[0] }
+        expect(response).to redirect_to root_path
+      end
     end
 
-    it 'redirect to index view' do
-      delete :destroy, params: { id: @author.questions[0] }
-      expect(response).to redirect_to root_path
-    end
+    context 'Non Author' do
+      
+      sign_in_user
 
-    it "no deletes another user's question" do
-      @user = create(:user)
-      sign_in(@user)
-      @author_question = @author.questions[0]
-      expect { delete :destroy, params: { id: @author_question }}.to change(@author.questions, :count).by(0)
+      it "no deletes another user's question" do
+        @author_question = @author.questions[0]
+        expect { delete :destroy, params: { id: @author_question }}.to change(@author.questions, :count).by(0)
+      end
+
+      it 'redirect to index view' do
+        delete :destroy, params: { id: @author.questions[0] }
+        expect(response).to redirect_to root_path
+      end
     end
   end
 end

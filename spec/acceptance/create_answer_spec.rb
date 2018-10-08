@@ -25,7 +25,7 @@ feature 'Create answer', %q{
     fill_in 'Body', with: ''
     click_on 'Create'
 
-    expect(page).to have_content "NOT"
+    expect(page).to have_content "Body can't be blank"
   end
 
   scenario 'Non-authenticated user ties to create question' do

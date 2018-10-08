@@ -5,8 +5,7 @@ feature 'View answers', %q{
 } do
 
   given(:user) { create(:user) }
-  before {@question = create(:question_with_answers)}
-
+  given!(:question) { create(:question_with_answers) }
 
   scenario 'Authenticated user is able to answers' do
     sign_in(user)

@@ -1,15 +1,7 @@
 class AnswersController < ApplicationController
-  before_action :find_answer, only: %i[show edit update destroy]
+  before_action :find_answer, only: %i[ edit update destroy]
   before_action :find_question, only: %i[ create ]
 
-  def show
-  end
-
-  def index
-  end
-
-  def new
-  end
 
   def edit
   end
@@ -23,8 +15,7 @@ class AnswersController < ApplicationController
       flash[:notice] = 'Your answer successfully created.'
       redirect_to question_path @question
     else
-      flash[:notice] = 'Your answer NOT created.'
-      redirect_to @question
+      render 'questions/show', {answer: @answer}
     end
   end
 

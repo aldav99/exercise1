@@ -1,20 +1,25 @@
+p= "Question's title: #{@question.title}"
+
 p= "Question's body: #{@question.body}"
 
 p= "Answers' list:"
 
-table
-  tbody
-    - @question.answers.each do |answer|
-      tr
-        td = answer.body
-        - if (current_user && current_user.author_of?(answer))
-          td= link_to 'Delete answer', answer, :method => :delete, :data => {:confirm => 'Are you sure?'}
+/= render 'shared/errors', resource: @answer
+
+- unless @answer
+  table
+    tbody
+      - @question.answers.each do |answer|
+        tr
+          td = answer.body
+          - if current_user&.author_of?(answer)
+            td= link_to 'Delete answer', answer, method: :delete, :data => {:confirm => 'Are you sure?'}
 
 
 - if user_signed_in?
   p= "Create answer:"
   = form_for [@question, @question.answers.build] do |f|
-
+    = render 'shared/errors', resource: @answer
     = f.label :body
     = f.text_area :body
     = f.submit 'Create'

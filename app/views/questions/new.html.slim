@@ -1,8 +1,5 @@
 = form_for @question do |f|
-  - if @question.errors.any?
-    - @question.errors.full_messages.each do |message|
-      li= message
-  p=
+  = render 'shared/errors', resource: @question
 
   = f.label :title
   = f.text_field :title

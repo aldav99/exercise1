@@ -16,22 +16,4 @@ module AcceptanceHelper
 
     click_button 'Sign up'
   end
-
-  def create_question_and_answer
-    click_on 'Ask question'
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'text text'
-    click_on 'Create'
-    
-    fill_in 'Body', with: 'Test answer'
-    click_on 'Create'
-  end
-
-  def create_question
-    click_on 'Ask question'
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'text text'
-    click_on 'Create'
-    click_on 'Back'
-  end
 end

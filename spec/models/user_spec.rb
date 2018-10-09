@@ -4,7 +4,6 @@ RSpec.describe User do
   let(:user) { create(:user) }
   let(:another_user) { create(:user) }
   let(:question) { create(:question, user: user) }
-  let(:answer) { create(:answer, user: user) }
 
   describe "Associations" do
     it { should have_many(:answers) }
@@ -18,19 +17,15 @@ RSpec.describe User do
 
   describe "author_of?" do
     it "user.author_of? question is true" do
-      expect(user.author_of?(question)).to be_truthy
-    end
-
-    it "user.author_of? answer is true" do
-      expect(user.author_of?(answer)).to be_truthy
+      expect(user).to be_author_of(question)
     end
 
     it "another_user.author_of? question is false" do
-      expect(another_user.author_of?(question)).to be_falsey
+      expect(another_user).to_not be_author_of(question)
     end
 
-    it "another_user.author_of? answer is false" do
-      expect(another_user.author_of?(answer)).to be_falsey
+    it "Passing a object without user_id is false" do
+      expect(user).to_not be_author_of(another_user)
     end
   end
 end

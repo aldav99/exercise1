@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
+  let(:author) { create(:user_with_questions) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
@@ -123,17 +124,16 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'DELETE #destroy' do
 
     before do
-      @author = create(:user_with_questions)
-      sign_in(@author)
+      sign_in(author)
     end
 
     context 'Author' do
       it 'deletes question' do
-        expect { delete :destroy, params: { id: @author.questions[0] }}.to change(@author.questions, :count).by(-1)
+        expect { delete :destroy, params: { id: author.questions[0] }}.to change(author.questions, :count).by(-1)
       end
 
       it 'redirect to index view' do
-        delete :destroy, params: { id: @author.questions[0] }
+        delete :destroy, params: { id: author.questions[0] }
         expect(response).to redirect_to root_path
       end
     end
@@ -143,12 +143,12 @@ RSpec.describe QuestionsController, type: :controller do
       sign_in_user
 
       it "no deletes another user's question" do
-        @author_question = @author.questions[0]
-        expect { delete :destroy, params: { id: @author_question }}.to change(@author.questions, :count).by(0)
+        author_question = author.questions[0]
+        expect { delete :destroy, params: { id: author_question }}.to_not change(author.questions, :count)
       end
 
       it 'redirect to index view' do
-        delete :destroy, params: { id: @author.questions[0] }
+        delete :destroy, params: { id: author.questions[0] }
         expect(response).to redirect_to root_path
       end
     end

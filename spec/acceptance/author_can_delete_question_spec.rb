@@ -5,7 +5,7 @@ feature 'Author can delete question', %q{
  } do
 
   given(:user) { create(:user) }
-  before { create(:question, user: user, title: 'Test question') }
+  given!(:question) { create(:question, user: user, title: 'Test question') }
 
   scenario "Author can delete question" do
     sign_in(user)

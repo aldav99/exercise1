@@ -5,14 +5,12 @@ feature 'Author can delete answer', %q{
  } do
 
   given(:user) { create(:user) }
-  before(:each) do
-    @question = create(:question, title: "TestTest")
-    @author = create(:user)
-    @answer = create(:answer, user: @author, question: @question, body: 'Test answer')
-  end
+  given!(:question) { create(:question, title: "TestTest") }
+  given!(:author) { create(:user) }
+  given!(:answer) { create(:answer, user: author, question: question, body: 'Test answer') }
 
   scenario "Author can delete answer" do
-    sign_in(@author)
+    sign_in(author)
 
     click_on 'TestTest'
     expect(page).to have_content 'Test answer'

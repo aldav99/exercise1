@@ -4,12 +4,10 @@ p= "Question's body: #{@question.body}"
 
 p= "Answers' list:"
 
-/= render 'shared/errors', resource: @answer
-
-- unless @answer
-  table
-    tbody
-      - @question.answers.each do |answer|
+table
+  tbody
+    - @question.answers.each do |answer|
+      - if answer.persisted?
         tr
           td = answer.body
           - if current_user&.author_of?(answer)

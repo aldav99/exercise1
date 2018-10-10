@@ -6,6 +6,7 @@ feature 'Author can delete question', %q{
 
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user, title: 'Test question') }
+  given!(:another_user){create(:user)}
 
   scenario "Author can delete question" do
     sign_in(user)
@@ -19,7 +20,6 @@ feature 'Author can delete question', %q{
   end
 
   scenario 'Another user cannot delete question' do
-    another_user = create(:user)
     sign_in(another_user)
 
     expect(page).to have_content 'Test question'

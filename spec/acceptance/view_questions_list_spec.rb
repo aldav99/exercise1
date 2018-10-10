@@ -10,6 +10,6 @@ feature 'View questions', %q{
   scenario 'Authenticated user is able to view questions' do
     sign_in(user)
 
-    expect(page).to have_content("questionquestion", count: 10)
+    expect(page).to have_content("questionquestion", count: 5)
   end
 end

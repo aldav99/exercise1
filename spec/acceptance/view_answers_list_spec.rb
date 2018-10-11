@@ -5,12 +5,12 @@ feature 'View answers', %q{
 } do
 
   given(:user) { create(:user) }
-  given!(:question) { create(:question_with_answers) }
+  given!(:question) { create(:question_with_answers, title: "TestAnswerTest") }
 
   scenario 'Authenticated user is able to answers' do
     sign_in(user)
 
-    click_on 'questionquestion1'
+    click_on 'TestAnswerTest'
 
     expect(page).to have_content("answeranswer", count: 5)
   end

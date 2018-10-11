@@ -1,0 +1,8 @@
+table
+    tbody
+      - @question.answers.each do |answer|
+        - if answer.persisted?
+          tr
+            td = answer.body
+            - if current_user&.author_of?(answer)
+              td= link_to 'Delete answer', answer, method: :delete, :data => {:confirm => 'Are you sure?'}

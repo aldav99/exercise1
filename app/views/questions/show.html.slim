@@ -4,17 +4,12 @@ p= "Question's body: #{@question.body}"
 
 p= "Answers' list:"
 
-.answers
-  = render 'questions/answers'
-  /table
-    tbody
-      - @question.answers.each do |answer|
-        - if answer.persisted?
-          tr
-            td = answer.body
-            - if current_user&.author_of?(answer)
-              td= link_to 'Delete answer', answer, method: :delete, :data => {:confirm => 'Are you sure?'}
 
+.answers
+  = render @answer
+table
+  tbody
+    =render @question.answers
 
 
 - if user_signed_in?
@@ -26,3 +21,4 @@ p= "Answers' list:"
     = f.submit 'Create'
 
 p= link_to 'Back', root_path
+

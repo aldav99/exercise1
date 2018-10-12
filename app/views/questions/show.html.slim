@@ -4,12 +4,12 @@ p= "Question's body: #{@question.body}"
 
 p= "Answers' list:"
 
-
-.answers
-  = render @answer
 table
   tbody
     =render @question.answers
+
+.answers
+  = render @answer
 
 
 - if user_signed_in?

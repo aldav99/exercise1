@@ -4,6 +4,9 @@ p= "Question's body: #{@question.body}"
 
 p= "Answers' list:"
 
+.errors
+  = render 'shared/errors', resource: @answer
+
 table
   tbody
     =render @question.answers
@@ -11,11 +14,9 @@ table
 .answers
   = render @answer
 
-
 - if user_signed_in?
   p= "Create answer:"
   = form_for [@question, @answer], remote: true do |f|
-    = render 'shared/errors', resource: @answer
     = f.label :body
     = f.text_area :body
     = f.submit 'Create'

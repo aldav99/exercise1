@@ -4,8 +4,7 @@ p= "Question's body: #{@question.body}"
 
 p= "Answers' list:"
 
-.errors
-  = render 'shared/errors', resource: @answer
+
 
 table
   tbody
@@ -18,6 +17,8 @@ table
   p= "Create answer:"
   = form_for [@question, @answer], remote: true do |f|
     = f.label :body
+    .errors
+      = render 'shared/errors', resource: @answer
     = f.text_area :body
     = f.submit 'Create'
 

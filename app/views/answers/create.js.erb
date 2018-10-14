@@ -1,7 +1,7 @@
-<%- if @answer.persisted? %>
+<%- if @answer.errors.present? %>
+  $('.errors').html('<%= j render 'shared/errors', resource: @answer %>');
+  setTimeout("$('.errors ul').remove();", 3000);
+<%- else %>
   $('.answers').append('<%= j render @answer %>');
   $('#answer_body').val('');
-<%- else %>
-   $('.errors').html('<%= j render 'shared/errors', resource: @answer %>');
-   setTimeout("$('.errors ul').remove();", 3000);
 <%- end %>

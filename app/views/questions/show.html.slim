@@ -1,24 +1,16 @@
-p= "Question's title: #{@question.title}"
+h1= @question.title
+p= @question.body
 
-p= "Question's body: #{@question.body}"
-
-p= "Answers' list:"
-
-
-
-=render @question.answers
-
+.notice
 .answers
+  =render @question.answers.order("best DESC")
   = render @answer
 
-- if user_signed_in?
-  p= "Create answer:"
-  = form_for [@question, @answer], remote: true do |f|
-    = f.label :body
-    .errors
-      = render 'shared/errors', resource: @answer
+= form_for [@question, @answer], remote: true do |f|
+  p
+    = f.label :body, 'Your answer'
+    .answer-errors
     = f.text_area :body
-    = f.submit 'Create'
+  p= f.submit 'Create'
 
 p= link_to 'Back', root_path
-

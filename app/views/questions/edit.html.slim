@@ -1,0 +1,14 @@
+h1= "Update question"
+p= @question.title
+
+
+= form_for @question do |f|
+  = render 'shared/errors', resource: @question
+
+  = f.label :title
+  = f.text_field :title, placeholder: @question.title
+  = f.label :body
+  = f.text_area :body, placeholder: @question.body
+  = f.submit 'Update'
+
+p= link_to 'Back', root_path

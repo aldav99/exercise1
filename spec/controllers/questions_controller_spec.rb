@@ -89,7 +89,12 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    sign_in_user
+    
+    before do
+      sign_in(author)
+      @author_question = author.questions[0]
+    end
+
     context 'valid attributes' do
 
       it 'assigns the requested question to @question' do
@@ -98,29 +103,47 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'change question attributes' do
-        patch :update, params: {id: question, question: {title: 'new title', body: 'new body'}}
-        question.reload
-        expect(question.title).to eq 'new title'
-        expect(question.body).to eq 'new body'
+        # author_question = author.questions[0]
+        patch :update, params: {id: @author_question, question: {title: 'new title', body: 'new body'}}
+        @author_question.reload
+
+        expect(@author_question.title).to eq 'new title'
+        expect(@author_question.body).to eq 'new body'
       end
 
       it 'redirects to the updated question' do
-        patch :update, params: {id: question, question: attributes_for(:question)}
-        expect(response).to redirect_to question
+        patch :update, params: {id: @author_question, question: attributes_for(:question)}
+        expect(response).to redirect_to @author_question
       end
     end
 
     context 'invalid attributes' do
-      before {patch :update, params: {id: question, question: {title: 'new title', body: nil}}}
+      before {patch :update, params: {id: @author_question, question: {title: 'new title', body: nil}}}
       
+
       it 'does not change question attributes' do
+        @author_question.reload
+        expect(@author_question.title).to match(/questionquestion/)
+        expect(@author_question.body).to eq 'MyText'
+      end
+
+      it 're-renders edit view' do
+        expect(response).to render_template :edit
+      end
+    end
+
+    context 'Non Author' do
+      sign_in_user
+      before {patch :update, params: {id: question, question: {title: 'new title', body: 'new body'}}}
+      
+      it "no edit another user's question" do
         question.reload
         expect(question.title).to match(/questionquestion/)
         expect(question.body).to eq 'MyText'
       end
 
-      it 're-renders edit view' do
-        expect(response).to render_template :edit
+      it 'redirect to index view' do
+        expect(response).to redirect_to root_path
       end
     end
   end

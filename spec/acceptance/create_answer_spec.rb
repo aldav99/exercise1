@@ -12,10 +12,12 @@ feature 'Create answer', %q{
     sign_in(user)
 
     click_on 'TestTestTest'
-    fill_in 'Body', with: 'text text'
+    fill_in 'Your answer', with: 'text text'
     click_on 'Create'
 
-    expect(page).to have_content 'text text'
+    within '.answers' do
+      expect(page).to have_content 'text text'
+    end
   end
 
   scenario "Validation's error", js: true do
@@ -23,7 +25,7 @@ feature 'Create answer', %q{
 
     click_on 'TestTestTest'
 
-    fill_in 'Body', with: ''
+    fill_in 'Your answer', with: ''
     click_on 'Create'
 
     expect(page).to have_content "Body can't be blank"

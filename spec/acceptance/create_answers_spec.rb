@@ -11,9 +11,10 @@ feature 'User answer', %q{
 
   scenario 'Authenticated user create answer', js: true do
     sign_in(user)
+
     visit question_path(question)
 
-    fill_in 'Body', with: 'My answer'
+    fill_in 'Your answer', with: 'My answer'
     click_on 'Create'
 
     expect(current_path).to eq question_path(question)

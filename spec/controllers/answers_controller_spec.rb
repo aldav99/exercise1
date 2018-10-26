@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:author) { create(:user_with_answers) }
-  let(:question) { create(:question) }
-  let(:answer) { create(:answer, question: question) }
+  let!(:author) { create(:user_with_answers) }
+  let!(:question) { create(:question) }
+  let!(:answer) { create(:answer, question: question, user: author ) }
 
   describe 'GET #edit' do
     
@@ -50,7 +50,11 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
     context 'valid attributes' do
-
+      
+      before do
+        sign_in(author)
+      end
+      
       it 'assigns the requested answer to answer' do
         patch :update, params: {id: answer, answer: attributes_for(:answer)}, format: :js
         expect(assigns(:answer)).to eq answer
@@ -74,18 +78,32 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    # context 'invalid attributes' do
-    #   before {patch :update, params: {id: answer, answer: {body: nil}}}
+    context 'invalid attributes' do
+      before do
+        sign_in(author)
+        patch :update, params: {id: answer, answer: {body: nil}}, format: :js
+      end
       
-    #   it 'does not change answer attributes' do
-    #     answer.reload
-    #     expect(answer.body).to match(/answeranswer/)
-    #   end
+      it 'does not change answer attributes' do
+        answer.reload
+        expect(answer.body).to match(/answeranswer/)
+      end
 
-    #   it 're-renders edit view' do
-    #     expect(response).to render_template :edit
-    #   end
-    # end
+      it 're-renders edit view' do
+        expect(response).to render_template :update
+        # expect(response).to render_template :edit
+      end
+    end
+
+    context 'Non Author' do
+      sign_in_user
+
+      it "no edit another user's answer" do
+        patch :update, params: {id: author.answers[0], answer: {body: "other user text"}}, format: :js
+        answer.reload
+        expect(author.answers[0].body).to match(/answeranswer/)
+      end
+    end
   end
 
   describe 'DELETE #destroy' do

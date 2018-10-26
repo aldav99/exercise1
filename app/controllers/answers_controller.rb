@@ -17,8 +17,16 @@ class AnswersController < ApplicationController
 
   def update
     @answer = Answer.find(params[:id])
-    @answer.update(answer_params)
-    @question = @answer.question
+    if current_user.author_of?(@answer)
+      @answer.update(answer_params)
+      @question = @answer.question
+    else
+      respond_to do |format|
+        format.js {  flash[:notice] = "You aren't author."}
+      end
+      flash[:notice] = "You aren't author."
+      redirect_to @answer.question
+    end
   end
 
   # def update
@@ -28,7 +36,15 @@ class AnswersController < ApplicationController
   #     render :edit
   #   end
   # end
-
+  def best
+    @answer = Answer.find(params[:id])
+    if current_user.author_of?(@answer.question)
+      Answer.flip_best(@answer)
+    else 
+      flash[:notice] = "You aren't author."
+    end
+    redirect_to @answer.question
+  end
 
   def destroy
     if current_user.author_of?(@answer)

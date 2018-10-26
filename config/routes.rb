@@ -14,5 +14,14 @@ Rails.application.routes.draw do
   end
 
   root to: "questions#index"
+
+  # post "best" => "answers#make_best"
+  resources :answers do 
+    get :best, on: :member
+  end
+
+  # post 'best', to: 'answers#make_best'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
+
+

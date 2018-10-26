@@ -1,25 +1,8 @@
 <% if @answer.errors.present? %>
-  $('.errors').html('<%= j render 'shared/errors', resource: @answer %>');
-  setTimeout("$('.errors ul').remove();", 3000);
+  $('.answer-update-errors').html('<%= j render 'shared/errors', resource: @answer %>');
+  setTimeout("$('.answer-update-errors ul').remove();", 3000);
 <% else %>
-  // $('.answers').append('<%= j render @answer %>');
   // $('.answers').html('<%= j render @answer %>');
-  // $('.edit-answer-link').click(function(e) {
-  //     e.preventDefault();
-  //     $(this).hide();
-  //     answer_id = $(this).data('answerId');
-  //     $('form#edit-answer-' + answer_id).show();
-  // });
-  $('.edit_answer input').click(function(e) {
-    e.preventDefault();
-    id = $(this).parent().attr('id');
-    answer_id = id.split('-').pop();
-    $('p#' + answer_id).html('<%= j render @answer %>');
-    // $('form#edit-answer-' + answer_id).hide();
-    // $('form#edit-answer-' + answer_id).siblings().hide();
-    // $('textarea#answer_body').hide();
-  });
-    // $(this).siblings('textarea');
-    // alert($(this).siblings('textarea').html());
-
+  $(".notice").html("<%=j flash[:notice] %>");
+  $('.answers').html('<%= j render @question.answers %>');
 <% end %>

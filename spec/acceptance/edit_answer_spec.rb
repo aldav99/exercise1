@@ -8,7 +8,8 @@ feature 'Answer editing', %q{
 
   given(:user) { create(:user) }
   given!(:question) { create(:question) }
-  given!(:answer) { create(:answer, question: question) }
+  given!(:answer) { create(:answer, question: question, user: user) }
+  given(:other_user) { create(:user) }
 
   scenario 'Unauthenticated user try to edit question' do
     visit question_path(question)
@@ -24,9 +25,9 @@ feature 'Answer editing', %q{
     end
 
     scenario 'sees link to Edit' do
-      # within '.answers' do
+      within '.answers' do
         expect(page).to have_link 'Edit'
-      # end
+      end
     end
 
     scenario 'try to edit his answer', js: true do
@@ -34,7 +35,6 @@ feature 'Answer editing', %q{
       within '.answers' do
         fill_in 'Answer', with: 'edited answer'
         click_on 'Save'
-        save_and_open_page
 
         expect(page).to_not have_content answer.body
         expect(page).to have_content 'edited answer'
@@ -42,6 +42,16 @@ feature 'Answer editing', %q{
       end
     end
 
-    scenario "try to edit other user's question"
+    scenario "try to edit other user's answer", js: true do
+      click_on 'Log out'
+
+      sign_in other_user
+      visit question_path(question)
+      
+      within '.answers' do
+        expect(page).to have_content answer.body
+        expect(page).to_not have_link 'Edit'
+      end
+    end
   end
 end

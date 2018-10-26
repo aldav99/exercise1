@@ -29,10 +29,15 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.update(question_params)
-      redirect_to @question
+    if current_user.author_of?(@question)
+      if @question.update(question_params)
+        redirect_to @question
+      else
+        render :edit
+      end
     else
-      render :edit
+      flash[:notice] = "You aren't author."
+      redirect_to root_path
     end
   end
 

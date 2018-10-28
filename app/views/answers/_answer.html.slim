@@ -9,7 +9,7 @@
       br
       = f.text_area :body
       = f.submit 'Save'
-    p= link_to 'Delete answer', answer, method: :delete, id: answer.id, :data => {confirm: 'Are you sure?', remote: true}
+    p= link_to 'Delete answer', answer, method: :delete, data: {confirm: 'Are you sure?', remote: true}
   - if current_user&.author_of?(answer.question) && !answer.best
       p= link_to 'Best answer?', best_answer_path(answer)
   br

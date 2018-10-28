@@ -48,6 +48,33 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe ' #best' do
+    before do
+      @author_question = create(:question, user: author )
+      @answer = create(:answer, question: @author_question )
+    end
+
+    context 'Author' do
+      before {sign_in(author)}
+      
+      it 'method best change field best of answer' do
+        get :best, params: {id: @answer}
+        @answer.reload
+        expect(@answer.best).to eq true
+      end
+    end
+
+    context 'Non Author' do
+      sign_in_user
+      
+      it 'method best change field best of answer' do
+        get :best, params: {id: @answer}
+        @answer.reload
+        expect(@answer.best).to eq false
+      end
+    end
+  end
+
   describe 'PATCH #update' do
     context 'valid attributes' do
       

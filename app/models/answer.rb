@@ -6,15 +6,13 @@ class Answer < ApplicationRecord
 
   scope :former_best, -> { where(best: true) }
 
-  def self.flip_best(answer)
-    former_best = Answer.former_best.first
-    
+  def toggle_best
+    former_best = self.question.answers.former_best.first
+     
     if former_best 
-      former_best.best = false
-      former_best.save
+      former_best.update!(best: false)
     end
     
-    answer.best = true
-    answer.save
+    self.update!(best: true)
   end
 end

@@ -1,14 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
-  let!(:answer) { create(:answer) }
-  let!(:answer_best) { create(:answer, best: true) }
-  # before do
-  #   @answer = create(:answer)
-  #   @answer.save
-  #   @answer_best = create(:answer, best: true)
-  #   @answer_best.save
-  # end
+  let!(:question) { create(:question) }
+  let!(:answer) { create(:answer, question: question) }
+  let!(:answer_best) { create(:answer, question: question, best: true) }
 
   it { should validate_presence_of :body }
   it { should belong_to(:question) }
@@ -21,16 +16,36 @@ RSpec.describe Answer, type: :model do
   end
 
   describe "Prove scope" do
-    subject {Answer.former_best.to_a}
+    subject {question.answers.former_best.to_a}
     it { is_expected.to match_array [answer_best] }
   end
 
-  describe "Prove flip_best method" do
+  describe "Prove invoking toggle_best method change best field to TRUE" do
     before do
-      Answer.flip_best(answer)
+      answer.toggle_best
     end
 
-    subject {Answer.former_best.to_a}
-    it { is_expected.to match_array [answer] }
+    it { expect(answer.best).to be }
+  end
+
+  describe "Prove invoking toggle_best method change best field best answer to FALSE" do
+    before do
+      answer.toggle_best
+      answer_best.reload
+    end
+
+    it {expect(answer_best.best).to be_falsey}
+    it {expect(answer_best.best).to_not be_nil}
+  end
+
+  describe "Invoking toggle_best method not change best field another questions's answer" do
+    before do
+      other_question = create(:question)
+      other_answer = create(:answer, question: other_question)
+      other_answer.toggle_best
+      answer_best.reload
+    end
+
+    it {expect(answer_best.best).to be}
   end
 end

@@ -24,26 +24,18 @@ class AnswersController < ApplicationController
       respond_to do |format|
         format.js {  flash[:notice] = "You aren't author."}
       end
-      flash[:notice] = "You aren't author."
-      redirect_to @answer.question
     end
   end
 
-  # def update
-  #   if @answer.update(answer_params)
-  #     redirect_to @answer
-  #   else
-  #     render :edit
-  #   end
-  # end
   def best
     @answer = Answer.find(params[:id])
-    if current_user.author_of?(@answer.question)
-      Answer.flip_best(@answer)
+    question = @answer.question
+    if current_user.author_of?(question)
+      @answer.toggle_best
     else 
       flash[:notice] = "You aren't author."
     end
-    redirect_to @answer.question
+    redirect_to question
   end
 
   def destroy

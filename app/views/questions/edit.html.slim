@@ -6,7 +6,7 @@ p= @question.title
   = render 'shared/errors', resource: @question
 
   = f.label :title
-  = f.text_field :title, placeholder: @question.title
+  = f.text_field :title
   = f.label :body
   = f.text_area :body, placeholder: @question.body
   = f.submit 'Update'

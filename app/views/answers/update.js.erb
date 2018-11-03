@@ -2,7 +2,9 @@
   $('.answer-update-errors').html('<%= j render 'shared/errors', resource: @answer %>');
   setTimeout("$('.answer-update-errors ul').remove();", 3000);
 <% else %>
-  // $('.answers').html('<%= j render @answer %>');
   $(".notice").html("<%=j flash[:notice] %>");
-  $('.answers').html('<%= j render @question.answers %>');
+  $('<%= ".update-#{@answer.id}" %>').text('<%= @answer.body %>');
+  $('<%= "form#edit-answer-#{@answer.id}"%>').hide();
+  $('.edit-answer-link').show();
 <% end %>
+

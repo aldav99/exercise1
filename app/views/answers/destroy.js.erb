@@ -1,2 +1,3 @@
-var element = document.getElementById("<%=j @answer.id %>");
-element.remove();
+$(".notice").html("<%=j flash[:notice] %>");
+$('<%= ".update-#{@answer.id}" %>').parent().remove();
+setTimeout("$('.notice').remove();", 2000);

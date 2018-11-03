@@ -10,7 +10,7 @@ feature 'Author can opt best answer', %q{
   given!(:answer) { create(:answer, user: author, question: question) }
   # given!(:answer) { create(:answer, user: author, question: question, body: 'Test answer') }
 
-  scenario "Question's Author can opt best answer" do
+  scenario "Question's Author can opt best answer", js: true do
     @answer1 = create(:answer, question: question, body: 'answer1')
       
     sign_in(author)
@@ -21,11 +21,12 @@ feature 'Author can opt best answer', %q{
 
     find(:xpath, "(//a[text()='Best answer?'])[2]").click
 
-    expect(page).to have_css(".answers p:first-child#true", text: @answer1.body)
+    expect(page).to have_css(".answers div:first-child p:first-child", id: "true")
+    expect(page).to have_css(".answers div:first-child p:first-child#true", text: @answer1.body)
     expect(page).to have_css(".answers p#true", count: 1)
   end
 
-  scenario "Opting best answer not change best answer another's question" do
+  scenario "Opting best answer not change best answer another's question", js: true do
     best_answer = create(:answer, question: question, best: true)
     another_question = create(:question, user: author)
     another_answer = create(:answer, question: another_question)

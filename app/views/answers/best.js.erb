@@ -1,0 +1,6 @@
+<% if @changed_answers[1].present? %>
+  $('#true').parent().remove();
+  $( ".answers" ).append( '<%= j render @changed_answers[1] %>' );
+<% end %>
+  $( ".answers" ).prepend( '<%= j render @changed_answers[0] %>' );
+  $('<%= ".update-#{@changed_answers[0].id}" %>#false').parent().remove();

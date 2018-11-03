@@ -1,6 +1,7 @@
 class AnswersController < ApplicationController
   before_action :find_answer, only: %i[ edit update destroy]
   before_action :find_question, only: %i[ create ]
+  protect_from_forgery except: :best
 
 
   def edit
@@ -29,23 +30,34 @@ class AnswersController < ApplicationController
 
   def best
     @answer = Answer.find(params[:id])
-    question = @answer.question
-    if current_user.author_of?(question)
+    @question = @answer.question
+    if current_user.author_of?(@question)
+      @former_best_answer = @question.answers.former_best.first if @question.answers.former_best.first
       @answer.toggle_best
-    else 
-      flash[:notice] = "You aren't author."
+      if @former_best_answer
+        @former_best_answer.best = false
+        @changed_answers = [@answer, @former_best_answer]
+      else
+        @changed_answers = [@answer]
+      end
+    else
+      respond_to do |format|
+        format.js {  flash[:notice] = "You aren't author."}
+      end
     end
-    redirect_to question
   end
 
   def destroy
     if current_user.author_of?(@answer)
       @answer.destroy
-      flash[:notice] = "The answer is deleted!!!."
+      respond_to do |format|
+        format.js {  flash[:notice] = "The answer is deleted!!!."}
+      end
     else
-      flash[:notice] = "You aren't author."
+      respond_to do |format|
+        format.js {  flash[:notice] = "You aren't author."}
+      end
     end
-    redirect_to question_path @answer.question
   end
 
   private

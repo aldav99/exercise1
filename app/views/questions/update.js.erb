@@ -1,0 +1,12 @@
+<% if @question.errors.present? %>
+  $('.question-update-errors').html('<%= j render 'shared/errors', resource: @question %>');
+  setTimeout("$('.question-update-errors ul').remove();", 3000);
+<% else %>
+  $(".notice").html("<%=j flash[:notice] %>");
+  $('<%= ".update-#{@question.id}" %>').text('<%= @question.title %>');
+  $('<%= "form#edit-question-#{@question.id}"%>').hide();
+  $('.edit-question-link-title').show();
+  $('<%= ".update_body-#{@question.id}" %>').text('<%= @question.body %>');
+  $('<%= "form#edit-question_body#{@question.id}"%>').hide();
+  $('.edit-question-link-body').show();
+<% end %>

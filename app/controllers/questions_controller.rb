@@ -30,14 +30,12 @@ class QuestionsController < ApplicationController
 
   def update
     if current_user.author_of?(@question)
-      if @question.update(question_params)
-        redirect_to @question
-      else
-        render :edit
-      end
+      @question.update(question_params)
+      @question
     else
-      flash[:notice] = "You aren't author."
-      redirect_to root_path
+      respond_to do |format|
+        format.js { flash[:notice] = "You aren't author." }
+      end
     end
   end
 

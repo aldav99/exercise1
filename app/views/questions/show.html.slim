@@ -1,11 +1,34 @@
-h1= @question.title
-p= @question.body
+.question-update-errors
+h2= "Title:"
+.question
+  h3 class="update-#{@question.id}"= @question.title
+  - if current_user&.author_of?(@question)
+      p= link_to 'Edit', '', class: 'edit-question-link-title', data: { question_id: @question.id }
+      p
+      = form_for @question, remote: true, html: { id: "edit-question-#{@question.id}"} do |f|
+        = f.label :title, "Question's title"
+        br
+        = f.text_area :title
+        = f.submit 'Save'
+
+h2= "Body:"
+.question_body
+  h3 class="update_body-#{@question.id}"= @question.body
+  - if current_user&.author_of?(@question)
+      p= link_to 'Edit', '', class: 'edit-question-link-body', data: { question_id: @question.id }
+      p
+      = form_for @question, remote: true, html: { id: "edit-question_body#{@question.id}"} do |f|
+        = f.label :body, "Question's body"
+        br
+        = f.text_area :body
+        = f.submit 'Save'
+
+h2= "Answers:"
 
 .notice
 .answers
   =render @question.answers.order("best DESC")
-  = render @answer
-
+  
 = form_for [@question, @answer], remote: true do |f|
   p
     = f.label :body, 'Your answer'

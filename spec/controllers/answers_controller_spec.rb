@@ -58,19 +58,29 @@ RSpec.describe AnswersController, type: :controller do
       before {sign_in(author)}
       
       it 'method best change field best of answer' do
-        get :best, params: {id: @answer}
+        get :best, params: {id: @answer}, format: :js
         @answer.reload
         expect(@answer.best).to eq true
+      end
+
+      it 'render best template' do
+        get :best, params: {id: @answer}, format: :js
+        expect(response).to render_template :best
       end
     end
 
     context 'Non Author' do
       sign_in_user
       
-      it 'method best change field best of answer' do
-        get :best, params: {id: @answer}
+      it 'method best not change field best of answer' do
+        get :best, params: {id: @answer}, format: :js
         @answer.reload
         expect(@answer.best).to eq false
+      end
+
+      it 'render best template' do
+        get :best, params: {id: @answer}, format: :js
+        expect(response).to render_template :best
       end
     end
   end
@@ -140,12 +150,12 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'Author' do
       it 'deletes answer' do
-        expect { delete :destroy, params: { id: author.answers[0] }}.to change(author.answers, :count).by(-1)
+        expect { delete :destroy, params: { id: author.answers[0] }, format: :js}.to change(author.answers, :count).by(-1)
       end
 
       it 'redirect to index view' do
-        delete :destroy, params: { id: author.answers[0] }
-        expect(response).to redirect_to question_path(author.answers[0].question)
+        delete :destroy, params: { id: author.answers[0] }, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
@@ -154,12 +164,12 @@ RSpec.describe AnswersController, type: :controller do
 
       it "no deletes another user's answer" do
         author_answer = author.answers[0]
-        expect { delete :destroy, params: { id: author_answer }}.not_to change(author.answers, :count)
+        expect { delete :destroy, params: { id: author_answer }, format: :js}.not_to change(author.answers, :count)
       end
 
       it 'redirect to index view' do
-        delete :destroy, params: { id: author.answers[0] }
-        expect(response).to redirect_to question_path(author.answers[0].question)
+        delete :destroy, params: { id: author.answers[0] }, format: :js
+        expect(response).to render_template :destroy
       end
     end
   end

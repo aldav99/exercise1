@@ -9,7 +9,7 @@ feature 'Author can delete answer', %q{
   given!(:author) { create(:user) }
   given!(:answer) { create(:answer, user: author, question: question, body: 'Test answer') }
 
-  scenario "Author can delete answer" do
+  scenario "Author can delete answer", js: true do
     sign_in(author)
 
     click_on 'TestTest'

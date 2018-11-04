@@ -7,12 +7,14 @@ class Answer < ApplicationRecord
   scope :former_best, -> { where(best: true) }
 
   def toggle_best
-    former_best = self.question.answers.former_best.first
-     
-    if former_best 
-      former_best.update!(best: false)
-    end
+    former_best = self.question.answers.former_best.first 
     
-    self.update!(best: true)
+    Answer.transaction do
+      if former_best 
+        former_best.update!(best: false)
+      end
+      
+      self.update!(best: true)
+    end
   end
 end

@@ -32,14 +32,7 @@ class AnswersController < ApplicationController
     @answer = Answer.find(params[:id])
     @question = @answer.question
     if current_user.author_of?(@question)
-      @former_best_answer = @question.answers.former_best.first if @question.answers.former_best.first
       @answer.toggle_best
-      if @former_best_answer
-        @former_best_answer.best = false
-        @changed_answers = [@answer, @former_best_answer]
-      else
-        @changed_answers = [@answer]
-      end
     else
       respond_to do |format|
         format.js {  flash[:notice] = "You aren't author."}

@@ -68,6 +68,7 @@ gem 'rails-controller-testing'
 gem 'devise'
 
 gem 'jquery-turbolinks'
+gem 'carrierwave'
 
 group :test, :development do
   gem 'rspec-rails'

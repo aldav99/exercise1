@@ -9,6 +9,9 @@ RSpec.describe Answer, type: :model do
   it { should belong_to(:question) }
   it { should have_db_index(:question_id) }
   it { should have_db_index(:user_id) }
+  it { should have_many :attachments }
+
+  it { should accept_nested_attributes_for :attachments }
 
   describe "Best default false" do
     it {expect(answer.best).to be_falsey}

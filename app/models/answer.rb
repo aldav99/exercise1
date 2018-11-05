@@ -10,10 +10,7 @@ class Answer < ApplicationRecord
     former_best = self.question.answers.former_best.first 
     
     Answer.transaction do
-      if former_best 
-        former_best.update!(best: false)
-      end
-      
+      former_best.update!(best: false) if former_best
       self.update!(best: true)
     end
   end

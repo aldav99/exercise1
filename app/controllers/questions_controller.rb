@@ -31,7 +31,6 @@ class QuestionsController < ApplicationController
   def update
     if current_user.author_of?(@question)
       @question.update(question_params)
-      @question
     else
       respond_to do |format|
         format.js { flash[:notice] = "You aren't author." }

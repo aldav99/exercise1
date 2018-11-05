@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  before_action :find_answer, only: %i[ edit update destroy]
+  before_action :find_answer, only: %i[ edit update destroy best]
   before_action :find_question, only: %i[ create ]
   protect_from_forgery except: :best
 
@@ -17,7 +17,6 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer = Answer.find(params[:id])
     if current_user.author_of?(@answer)
       @answer.update(answer_params)
       @question = @answer.question
@@ -29,7 +28,6 @@ class AnswersController < ApplicationController
   end
 
   def best
-    @answer = Answer.find(params[:id])
     @question = @answer.question
     if current_user.author_of?(@question)
       @answer.toggle_best

@@ -70,6 +70,7 @@ gem 'devise'
 gem 'jquery-turbolinks'
 gem 'carrierwave'
 gem 'remotipart'
+gem 'cocoon'
 
 group :test, :development do
   gem 'rspec-rails'

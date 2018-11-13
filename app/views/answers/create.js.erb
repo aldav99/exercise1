@@ -2,10 +2,6 @@
   $('.answer-errors').html('<%= j render 'shared/errors', resource: @answer %>');
   setTimeout("$('.answer-errors ul').remove();", 3000);
 <% else %>
-  <% if remotipart_submitted? %>
-    $('.answers').append("<%=  j "#{render(@answer)}" %>");
-  <% else %>
-    ('.answers').append("<%=  j render(@answer) %>");
-  <% end %>
+  $('.answers').append("<%=  j render(@answer) %>");
   $('textarea#answer_body').val('');
 <% end %>

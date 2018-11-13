@@ -13,7 +13,7 @@
         br
         = f.text_area :body
         = f.fields_for :attachments, answer.attachments.build do |file|
-          = render 'answers/attachment_fields', f: file
+          = render 'questions/attachment_fields', f: file
         = link_to_add_association 'add a file', f, :attachments 
         = f.submit 'Save'
       p= link_to 'Delete answer', answer, method: :delete, data: {confirm: 'Are you sure?', remote: true}

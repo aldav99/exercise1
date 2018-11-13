@@ -1,9 +1,9 @@
 - if answer.persisted?
   div 
     p class= "update-#{answer.id}" id="#{answer.best}"= answer.body
-    ul
-      - answer.attachments.each do |a|
-        li= link_to a.file.identifier, a.file.url
+    table
+      tbody#answer_attachments
+        =render answer.attachments
     - if current_user&.author_of?(answer)
       p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
       p
@@ -12,6 +12,9 @@
         = f.label :body, "Answer"
         br
         = f.text_area :body
+        = f.fields_for :attachments, answer.attachments.build do |file|
+          = render 'answers/attachment_fields', f: file
+        = link_to_add_association 'add a file', f, :attachments 
         = f.submit 'Save'
       p= link_to 'Delete answer', answer, method: :delete, data: {confirm: 'Are you sure?', remote: true}
     - if current_user&.author_of?(answer.question) && !answer.best

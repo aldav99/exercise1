@@ -1,10 +1,14 @@
 class AnswersController < ApplicationController
-  before_action :find_answer, only: %i[ edit update destroy best]
+  before_action :find_answer, only: %i[ show edit update destroy best]
   before_action :find_question, only: %i[ create ]
   protect_from_forgery except: :best
 
 
   def edit
+  end
+
+  def show
+    @question = @answer.question
   end
 
 
@@ -18,6 +22,7 @@ class AnswersController < ApplicationController
 
   def update
     if current_user.author_of?(@answer)
+      # @answer.attachments.each { |a| a.save! }
       @answer.update(answer_params)
       @question = @answer.question
     else
@@ -63,6 +68,6 @@ class AnswersController < ApplicationController
     end
 
     def answer_params
-      params.require(:answer).permit(:body, :correct, attachments_attributes: [:file])
+      params.require(:answer).permit(:body, :correct, attachments_attributes: [:id,:file, :_destroy])
     end
 end

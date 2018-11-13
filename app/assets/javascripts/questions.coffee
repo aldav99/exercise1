@@ -16,6 +16,13 @@ ready_question_body = ->
     question_id = $(this).data('questionId')
     $('form#edit-question_body' + question_id).show()
 
+ready_question_file = ->
+  $('.question_file').on 'click', '.edit-question-link-file', (e) ->
+    e.preventDefault();
+    $(this).hide();
+    question_id = $(this).data('questionId')
+    $('form#edit-question_file' + question_id).show()
+
 hide_textarea_save = ->
   $('.edit_question').hide()
 
@@ -24,6 +31,9 @@ $(document).on('turbolinks:load', ready)
 
 $(document).ready(ready_question_body)
 $(document).on('turbolinks:load', ready_question_body)
+
+$(document).ready(ready_question_file)
+$(document).on('turbolinks:load', ready_question_file)
 
 $(document).ready(hide_textarea_save)
 $(document).on('turbolinks:load', hide_textarea_save)

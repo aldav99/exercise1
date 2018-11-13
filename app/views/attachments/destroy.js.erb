@@ -1,0 +1,3 @@
+$(".notice").html("<%=j flash[:notice] %>");
+$('<%= ".attach-#{@attachment.id}" %>').parent().parent().remove();
+setTimeout("$('.notice').remove();", 2000);

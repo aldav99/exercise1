@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     get :best, on: :member
   end
 
+  resources :attachments, only: [:destroy]
+
   # post 'best', to: 'answers#make_best'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

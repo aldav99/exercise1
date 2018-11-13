@@ -24,9 +24,20 @@ h2= "Body:"
         = f.submit 'Save'
 
 p Attachments:
-ul
-  - @question.attachments.each do |a|
-    li= link_to a.file.identifier, a.file.url
+
+table
+  tbody#attachments
+    =render @question.attachments
+
+.question_file
+  - if current_user&.author_of?(@question)
+      p= link_to 'Edit', '', class: 'edit-question-link-file', data: { question_id: @question.id }
+      p
+      = form_for @question, remote: true, html: { id: "edit-question_file#{@question.id}"} do |f|
+        = f.fields_for :attachments, @question.attachments.build do |file|
+          = render 'attachment_fields', f: file
+        = link_to_add_association 'add a file', f, :attachments 
+        p= f.submit 'Save'
 
 h2= "Answers:"
 
@@ -40,9 +51,6 @@ h2= "Answers:"
     .answer-errors
     = f.text_area :body
   p
-    = f.fields_for :attachments do |a|
-      = a.label :file
-      = a.file_field :file
-  p= f.submit 'Create'
+  = f.submit 'Create'
 
 p= link_to 'Back', root_path

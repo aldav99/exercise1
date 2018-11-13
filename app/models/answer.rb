@@ -1,7 +1,7 @@
 class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :user
-  has_many :attachments, as: :attachmentable
+  has_many :attachments, as: :attachmentable, dependent: :destroy
 
   validates :body, presence: true
 
@@ -16,5 +16,6 @@ class Answer < ApplicationRecord
     end
   end
 
-  accepts_nested_attributes_for :attachments
+  accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
+  # accepts_nested_attributes_for :attachments, reject_if: proc { |attr| attr['file'].nil? }, allow_destroy: true
 end

@@ -4,7 +4,10 @@
 <% else %>
   $(".notice").html("<%=j flash[:notice] %>");
   $('<%= ".update-#{@answer.id}" %>').text('<%= @answer.body %>');
+  $('tbody#answer_attachments').html('<%= j render @answer.attachments %>');
   $('<%= "form#edit-answer-#{@answer.id}"%>').hide();
   $('.edit-answer-link').show();
 <% end %>
+
+
 

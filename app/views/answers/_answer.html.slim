@@ -2,7 +2,7 @@
   div 
     p class= "update-#{answer.id}" id="#{answer.best}"= answer.body
     table
-      tbody#answer_attachments
+      tbody id = "answer_attachments-#{answer.id}"
         =render answer.attachments
     - if current_user&.author_of?(answer)
       p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
@@ -13,8 +13,8 @@
         br
         = f.text_area :body
         = f.fields_for :attachments, answer.attachments.build do |file|
-          = render 'questions/attachment_fields', f: file
-        = link_to_add_association 'add a file', f, :attachments 
+          = render 'shared/attachment_fields', formats: :js, f: file
+        = link_to_add_association 'add a file', f, :attachments, partial: 'shared/attachment_fields'
         = f.submit 'Save'
       p= link_to 'Delete answer', answer, method: :delete, data: {confirm: 'Are you sure?', remote: true}
     - if current_user&.author_of?(answer.question) && !answer.best

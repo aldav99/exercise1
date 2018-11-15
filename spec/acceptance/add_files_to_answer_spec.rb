@@ -16,11 +16,21 @@ feature 'Add files to answer', %q{
 
   scenario 'User adds file to answer', js: true do
     fill_in 'Your answer', with: 'My answer'
-    attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
     click_on 'Create'
+    click_on 'Edit'
+    # attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+    # inputs = all('input[type="file"]')
+    # attach_file inputs[0].set("#{Rails.root}/spec/spec_helper.rb")
+    page.attach_file("answer[attachments_attributes][0][file]", Rails.root + 'spec/spec_helper.rb')
+    # wait_for_ajax
+    click_on 'Save'
 
-    within '.answers' do
+    # visit question_path(question)
+
+    # save_and_open_page
+
+    # within '.answers' do
       expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
-    end
+    # end
   end
 end

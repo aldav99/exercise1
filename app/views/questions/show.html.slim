@@ -35,8 +35,8 @@ table
       p
       = form_for @question, remote: true, html: { id: "edit-question_file#{@question.id}"} do |f|
         = f.fields_for :attachments, @question.attachments.build do |file|
-          = render 'attachment_fields', f: file
-        = link_to_add_association 'add a file', f, :attachments 
+          = render 'shared/attachment_fields', f: file
+        = link_to_add_association 'add a file', f, :attachments, partial: 'shared/attachment_fields' 
         p= f.submit 'Save'
 
 h2= "Answers:"

@@ -8,6 +8,6 @@
     = f.text_area :body
   p
     = f.fields_for :attachments do |file|
-      = render 'attachment_fields', f: file
+      = render 'shared/attachment_fields', f: file
     = link_to_add_association 'add a file', f, :attachments 
   p= f.submit 'Create'

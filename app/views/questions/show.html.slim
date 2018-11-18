@@ -51,6 +51,8 @@ h2= "Answers:"
     .answer-errors
     = f.text_area :body
   p
+    = link_to_add_association 'add a file', f, :attachments, partial: 'shared/attachment_fields'
+  p
   = f.submit 'Create'
 
 p= link_to 'Back', root_path

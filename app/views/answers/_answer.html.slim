@@ -12,9 +12,6 @@
         = f.label :body, "Answer"
         br
         = f.text_area :body
-        = f.fields_for :attachments, answer.attachments.build do |file|
-          = render 'shared/attachment_fields', formats: :js, f: file
-        = link_to_add_association 'add a file', f, :attachments, partial: 'shared/attachment_fields'
         = f.submit 'Save'
       p= link_to 'Delete answer', answer, method: :delete, data: {confirm: 'Are you sure?', remote: true}
     - if current_user&.author_of?(answer.question) && !answer.best

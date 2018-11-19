@@ -13,12 +13,12 @@ RSpec.describe AttachmentsController, type: :controller do
 
     context 'Author' do
       it 'deletes my attachment' do
-        expect { delete :destroy, params: { id: my_attachment } }.to change(Attachment, :count).by(-1)
+        expect { delete :destroy, params: { id: my_attachment }, format: :js }.to change(Attachment, :count).by(-1)
       end
 
       it "redirect to quetion's show" do
-        delete :destroy, params: { id: my_attachment }
-        expect(response).to redirect_to my_question
+        delete :destroy, params: { id: my_attachment }, format: :js
+        expect(response).to render_template :destroy
       end
     end
 

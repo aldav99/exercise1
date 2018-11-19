@@ -7,7 +7,6 @@ class AttachmentsController < ApplicationController
     if current_user.author_of?(@attachment.attachmentable)
       @attachment.destroy 
       respond_to do |format|
-        format.html { redirect_to @question }
         format.js {  flash[:notice] = "The attachment is deleted!!!."}
       end
     else

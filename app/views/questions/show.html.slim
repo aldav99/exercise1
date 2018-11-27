@@ -23,6 +23,16 @@ h2= "Body:"
         = f.text_area :body
         = f.submit 'Save'
 
+h2 class="vote_questions"= "Vote:"
+.vote_questions_errors
+.question_vote
+  p= "#{@question.rate}"
+.question_vote_select
+  - if !current_user.author_of?(@question)
+    p= link_to 'Like', vote_up_question_path(@question), remote: true, class: 'like_vote', method: :post, data: { format: :json }
+    p= link_to 'DisLike', vote_down_question_path(@question), remote: true, class: 'like_vote', method: :post, data: { format: :json }
+    p= link_to 'Reset', vote_reset_question_path(@question), remote: true, class: 'reset_vote', method: :post, data: { format: :json }
+
 p Attachments:
 
 table
@@ -45,7 +55,7 @@ h2= "Answers:"
 .answers
   =render @question.answers.order("best DESC")
   
-= form_for [@question, @answer], remote: true do |f|
+= form_for [@question, @answer], remote: true, data: { format: :json } do |f|
   p
     = f.label :body, 'Your answer'
     .answer-errors

@@ -9,9 +9,24 @@ Rails.application.routes.draw do
   #   root :to => 'questions#index'
   # end
 
-  resources :questions, shallow: true do
-    resources :answers
+  # concern :votable do
+  #   resources :votes
+  # end
+
+  concern :votable do 
+    post :vote_up, on: :member
+    post :vote_down, on: :member
+    post :vote_reset, on: :member
+    # delete :vote_reset, on: :member
   end
+
+  resources :questions, concerns: [:votable], shallow: true do
+    resources :answers, concerns: [:votable]
+  end
+
+  # resources :questions, shallow: true do
+  #   resources :answers
+  # end
 
   root to: "questions#index"
 

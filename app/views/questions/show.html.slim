@@ -29,9 +29,9 @@ h2 class="vote_questions"= "Vote:"
   p= "#{@question.rate}"
 .question_vote_select
   - if !current_user.author_of?(@question)
-    p= link_to 'Like', vote_up_question_path(@question), remote: true, class: 'like_vote', method: :post, data: { format: :json }
-    p= link_to 'DisLike', vote_down_question_path(@question), remote: true, class: 'like_vote', method: :post, data: { format: :json }
-    p= link_to 'Reset', vote_reset_question_path(@question), remote: true, class: 'reset_vote', method: :post, data: { format: :json }
+      p= link_to 'Like', vote_up_question_path(@question), remote: true, class: 'like_vote', method: :post, data: { format: :json }
+      p= link_to 'DisLike', vote_down_question_path(@question), remote: true, class: 'like_vote', method: :post, data: { format: :json }
+      p= link_to 'Reset', vote_reset_question_path(@question), remote: true, class: 'reset_vote', method: :post, data: { format: :json }
 
 p Attachments:
 

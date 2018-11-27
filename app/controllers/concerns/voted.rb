@@ -6,7 +6,7 @@ module Voted
   end
 
   def vote_up
-    if !current_user.author_of?(@votable) && vote_not_exist?(current_user)
+    if !current_user.author_of?(@votable)
       vote = @votable.votes.build
       vote.user_id = current_user.id
       vote.vote = 1
@@ -21,7 +21,7 @@ module Voted
   end
 
   def vote_down
-    if !current_user.author_of?(@votable) && vote_not_exist?(current_user)
+    if !current_user.author_of?(@votable)
       vote = @votable.votes.build
       vote.user_id = current_user.id
       vote.vote = -1
@@ -38,7 +38,7 @@ module Voted
   def vote_reset
     if !current_user.author_of?(@votable) && !vote_not_exist?(current_user)
       @votable.votes.find_by_user_id(current_user.id).destroy
-      res = Vote.where(votable_type: @votable.class.to_s, votable_id: @votable.id).sum(&:vote)
+      res = Vote.vote_sum(@votable)
       respond_to do |format|
         format.json { render json: res }
       end

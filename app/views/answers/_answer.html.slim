@@ -1,5 +1,5 @@
 - if answer.persisted?
-  div 
+  div class= "answer_content" 
     p class= "update-#{answer.id}" id="#{answer.best}"= answer.body
     table
       tbody id = "answer_attachments-#{answer.id}"
@@ -16,4 +16,13 @@
       p= link_to 'Delete answer', answer, method: :delete, data: {confirm: 'Are you sure?', remote: true}
     - if current_user&.author_of?(answer.question) && !answer.best
         p= link_to 'Best answer?', best_answer_path(answer), remote: true
+    p= "Vote:"
+    div class= "answer_vote-#{answer.id}" 
+      p= "#{answer.rate}"
+    div class= "vote_answers_errors-#{answer.id}"
+    div class= "answer_vote_select-#{answer.id}"
+      - if !current_user.author_of?(answer)
+        p= link_to 'Like', vote_up_answer_path(answer), remote: true, class: 'like_vote', method: :post, data: { format: :json, answer_id: answer.id }
+        p= link_to 'DisLike', vote_down_answer_path(answer), remote: true, class: 'like_vote', method: :post, data: { format: :json, answer_id: answer.id }
+        p= link_to 'Reset', vote_reset_answer_path(answer), remote: true, class: 'reset_vote', method: :post, data: { format: :json, answer_id: answer.id }
     br

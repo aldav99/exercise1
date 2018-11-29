@@ -12,9 +12,11 @@ module Voted
       vote.vote = 1
       respond_to do |format|
         if vote.save
-          format.json { render json: @votable.rate }
+          res = {rate: @votable.rate, id: @votable.id }
+          format.json { render json: res }
         else
-          format.json { render json: vote.errors.full_messages, status: :unprocessable_entity }
+          res = {errors: vote.errors.full_messages, id: vote.votable_id}
+          format.json { render json: res, status: :unprocessable_entity }
         end
       end
     end
@@ -27,9 +29,11 @@ module Voted
       vote.vote = -1
       respond_to do |format|
         if vote.save
-          format.json { render json: @votable.rate }
+          res = {rate: @votable.rate, id: @votable.id }
+          format.json { render json: res }
         else
-          format.json { render json: vote.errors.full_messages, status: :unprocessable_entity }
+          res = {errors: vote.errors.full_messages, id: vote.votable_id}
+          format.json { render json: res, status: :unprocessable_entity }
         end
       end
     end
@@ -38,7 +42,7 @@ module Voted
   def vote_reset
     if !current_user.author_of?(@votable) && !vote_not_exist?(current_user)
       @votable.votes.find_by_user_id(current_user.id).destroy
-      res = Vote.vote_sum(@votable)
+      res = {rate: Vote.vote_sum(@votable), id: @votable.id }
       respond_to do |format|
         format.json { render json: res }
       end

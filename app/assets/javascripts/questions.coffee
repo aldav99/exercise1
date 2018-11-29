@@ -29,11 +29,13 @@ hide_textarea_save = ->
 vote_question = ->
   $('.question_vote_select').bind 'ajax:success', (e) ->
     [data, status, xhr] = e.detail
-    rate = $.parseJSON(xhr.responseText)
+    res = $.parseJSON(xhr.responseText)
+    rate = res.rate
     $('.question_vote').html('<p>' + rate + '</p>')
   .bind 'ajax:error', (e) ->
     [data, status, xhr] = e.detail
-    errors = $.parseJSON(xhr.responseText)
+    res = $.parseJSON(xhr.responseText)
+    errors = res.errors
     $.each errors, (index, value) ->
       $('.vote_questions_errors').append(value)
 

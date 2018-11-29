@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  include Voted
+  
   before_action :find_answer, only: %i[ show edit update destroy best]
   before_action :find_question, only: %i[ create ]
   protect_from_forgery except: :best

@@ -10,15 +10,23 @@ ready = ->
     $('form#edit-answer-' + answer_id).show()
 
 vote_answer = ->
-  $('.answer_vote_select').bind 'ajax:success', (e) ->
+  $('.answer_content').bind 'ajax:success', (e) ->
     [data, status, xhr] = e.detail
-    rate = $.parseJSON(xhr.responseText)
-    $('.answer_vote').html('<p>' + rate + '</p>')
+    id = data.data_id
+    res = $.parseJSON(xhr.responseText)
+    id = res.id
+    rate = res.rate
+    $('.answer_vote-' + id).html('<p>' + rate + '</p>')
   .bind 'ajax:error', (e) ->
     [data, status, xhr] = e.detail
-    errors = $.parseJSON(xhr.responseText)
+    res = $.parseJSON(xhr.responseText)
+    errors = res.errors
+    id = res.id
     $.each errors, (index, value) ->
-      $('.vote_answers_errors').append(value)
+      $('.vote_answers_errors-' + id).append(value)
 
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)
+
+$(document).ready(vote_answer)
+$(document).on('turbolinks:load', vote_answer)

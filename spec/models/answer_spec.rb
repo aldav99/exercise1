@@ -14,6 +14,8 @@ RSpec.describe Answer, type: :model do
 
   it { should accept_nested_attributes_for :attachments }
 
+  it_behaves_like "votable"
+
   describe "Best default false" do
     it {expect(answer.best).to be_falsey}
     it {expect(answer.best).to_not be_nil}

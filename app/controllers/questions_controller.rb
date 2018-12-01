@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   include Voted
 
-  before_action :authenticate_user!, except: [:index]#, :show]
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   
   def index
@@ -51,6 +51,15 @@ class QuestionsController < ApplicationController
     end
     redirect_to root_path
   end
+
+  # def vote_up(user)
+  #   if !user.author_of?(@question)
+  #     @vote = @question.votes.build
+  #     @vote.user_id = user.id
+  #     @vote.vote = 1
+  #     @vote
+  #   end
+  # end
 
   private
 

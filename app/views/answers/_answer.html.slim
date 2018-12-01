@@ -21,7 +21,7 @@
       p= "#{answer.rate}"
     div class= "vote_answers_errors-#{answer.id}"
     div class= "answer_vote_select-#{answer.id}"
-      - if !current_user.author_of?(answer)
+      - if current_user && !current_user.author_of?(answer)
         p= link_to 'Like', vote_up_answer_path(answer), remote: true, class: 'like_vote', method: :post, data: { format: :json, answer_id: answer.id }
         p= link_to 'DisLike', vote_down_answer_path(answer), remote: true, class: 'like_vote', method: :post, data: { format: :json, answer_id: answer.id }
         p= link_to 'Reset', vote_reset_answer_path(answer), remote: true, class: 'reset_vote', method: :post, data: { format: :json, answer_id: answer.id }

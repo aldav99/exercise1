@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   concern :votable do 
     post :vote_up, on: :member
     post :vote_down, on: :member
-    post :vote_reset, on: :member
+    delete :vote_reset, on: :member
   end
 
   resources :questions, concerns: [:votable], shallow: true do

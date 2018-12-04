@@ -6,9 +6,7 @@ module Voted
   end
 
   def vote_up
-    vote = @votable.votes.build
-    vote.user_id = current_user.id
-    vote.vote = 1
+    vote = @votable.votes.build(vote: 1, user: current_user)
     respond_to do |format|
       if vote.save
         res = {rate: @votable.rate, id: @votable.id }
@@ -21,9 +19,7 @@ module Voted
   end
 
   def vote_down
-    vote = @votable.votes.build
-    vote.user_id = current_user.id
-    vote.vote = -1
+    vote = @votable.votes.build(vote: -1, user: current_user)
     respond_to do |format|
       if vote.save
         res = {rate: @votable.rate, id: @votable.id }
@@ -36,11 +32,20 @@ module Voted
   end
 
   def vote_reset
-    if !vote_not_exist?(current_user)
-      @votable.votes.find_by_user_id(current_user.id).destroy
-      res = {rate: Vote.vote_sum(@votable), id: @votable.id }
+    vote = @votable.votes.find_by_user_id(current_user.id)
+    # &. не работает: не определен destroy у NIL class vote
+    if vote && vote.destroy 
+      # Без @votable.reload возвращается старое значение
+      @votable.reload
+      # res = {rate: Vote.vote_sum(@votable), id: @votable.id }
+      res = {rate: @votable.rate, id: @votable.id }
       respond_to do |format|
         format.json { render json: res }
+      end
+    else
+      res = {errors: ["Vote not found!"], id: @votable.id}
+      respond_to do |format|
+        format.json { render json: res, status: :unprocessable_entity }
       end
     end
   end
@@ -56,6 +61,6 @@ module Voted
   end
 
   def vote_not_exist?(user)
-    @votable.votes.empty? || !@votable.votes.map(&:user_id).include?(user.id) 
+    @votable.votes.empty? || @votable.votes.where(user: user).empty? 
   end
 end

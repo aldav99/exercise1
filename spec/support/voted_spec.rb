@@ -51,13 +51,18 @@ shared_examples "voted" do
   describe 'post :vote_reset' do
     context 'not author of votable' do
       it "responds with success" do
+        post :vote_down, params: {id: votable, format: :json}
         post :vote_reset, params: {id: votable, format: :json}
         expect(response).to have_http_status(:success)
       end
+    
+      it "Do not delete empty vote" do
+        post :vote_reset, params: {id: votable, format: :json}
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
     end
-  end
-
-  context 'author of votable' do
+  
+    context 'author of votable' do
       before do
         sign_in(user)
         @author_votable = create(model.controller_name.classify.constantize.to_s.underscore.to_sym, user: user)
@@ -65,8 +70,9 @@ shared_examples "voted" do
 
       it "responds with error" do
         post :vote_reset, params: {id: @author_votable, format: :json}
-        expect(response).to have_http_status(204)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
+  end
 end
 

@@ -52,15 +52,6 @@ class QuestionsController < ApplicationController
     redirect_to root_path
   end
 
-  # def vote_up(user)
-  #   if !user.author_of?(@question)
-  #     @vote = @question.votes.build
-  #     @vote.user_id = user.id
-  #     @vote.vote = 1
-  #     @vote
-  #   end
-  # end
-
   private
 
   def load_question

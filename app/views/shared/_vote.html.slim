@@ -1,0 +1,4 @@
+- if current_user && !current_user.author_of?(votable)
+      p= link_to 'Like', polymorphic_path(votable, action: :vote_up), remote: true,  method: :post, data: { format: :json }
+      p= link_to 'DisLike', polymorphic_path(votable, action: :vote_down), remote: true, method: :post, data: { format: :json }
+      p= link_to 'Reset', polymorphic_path(votable, action: :vote_reset), remote: true, method: :delete, data: { format: :json }

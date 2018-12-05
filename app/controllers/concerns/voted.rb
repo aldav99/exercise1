@@ -6,26 +6,26 @@ module Voted
   end
 
   def vote_up
-    vote = @votable.votes.build(vote: 1, user: current_user)
+    @vote = @votable.votes.build(vote: 1, user: current_user)
     respond_to do |format|
-      if vote.save
-        res = {rate: @votable.rate, id: @votable.id }
+      if @vote.save
+        res = {rate: @votable.rate, id: @votable.id, type: @vote.votable_type, type: @vote.votable_type}
         format.json { render json: res }
       else
-        res = {errors: vote.errors.full_messages, id: vote.votable_id}
+        res = {errors: @vote.errors.full_messages, id: @vote.votable_id}
         format.json { render json: res, status: :unprocessable_entity }
       end
     end
   end
 
   def vote_down
-    vote = @votable.votes.build(vote: -1, user: current_user)
+    @vote = @votable.votes.build(vote: -1, user: current_user)
     respond_to do |format|
-      if vote.save
-        res = {rate: @votable.rate, id: @votable.id }
+      if @vote.save
+        res = {rate: @votable.rate, id: @votable.id, type: @vote.votable_type}
         format.json { render json: res }
       else
-        res = {errors: vote.errors.full_messages, id: vote.votable_id}
+        res = {errors: @vote.errors.full_messages, id: @vote.votable_id, type: @vote.votable_type}
         format.json { render json: res, status: :unprocessable_entity }
       end
     end
@@ -38,12 +38,12 @@ module Voted
       # Без @votable.reload возвращается старое значение
       @votable.reload
       # res = {rate: Vote.vote_sum(@votable), id: @votable.id }
-      res = {rate: @votable.rate, id: @votable.id }
+      res = {rate: @votable.rate, id: @votable.id, type: @votable.class.to_s }
       respond_to do |format|
         format.json { render json: res }
       end
     else
-      res = {errors: ["Vote not found!"], id: @votable.id}
+      res = {errors: ["Vote not found!"], id: @votable.id, type: @votable.class.to_s}
       respond_to do |format|
         format.json { render json: res, status: :unprocessable_entity }
       end

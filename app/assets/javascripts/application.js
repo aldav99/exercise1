@@ -16,4 +16,5 @@
 //= require cocoon
 //= require activestorage
 //= require turbolinks
+//= require shared.js
 //= require_tree .

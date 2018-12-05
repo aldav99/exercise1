@@ -23,12 +23,13 @@ h2= "Body:"
         = f.text_area :body
         = f.submit 'Save'
 
-h2 class="vote_questions"= "Vote:"
-.vote_questions_errors
-.question_vote
-  p= "#{@question.rate}"
-.question_vote_select
-  = render 'shared/vote', votable: @question
+.common_vote_bind
+  h2 class="vote_questions"= "Vote:"
+  .vote_questions_errors
+  .question_vote
+    p= "#{@question.rate}"
+  .question_vote_select
+    = render 'shared/vote', votable: @question
 
 p Attachments:
 
@@ -63,3 +64,4 @@ h2= "Answers:"
   = f.submit 'Create'
 
 p= link_to 'Back', root_path
+

@@ -16,10 +16,11 @@
       p= link_to 'Delete answer', answer, method: :delete, data: {confirm: 'Are you sure?', remote: true}
     - if current_user&.author_of?(answer.question) && !answer.best
         p= link_to 'Best answer?', best_answer_path(answer), remote: true
-    p= "Vote:"
-    div class= "answer_vote-#{answer.id}" 
-      p= "#{answer.rate}"
-    div class= "vote_answers_errors-#{answer.id}"
-    div class= "answer_vote_select-#{answer.id}"
-      = render 'shared/vote', votable: answer
+    .common_vote_bind
+      p= "Vote:"
+      div class= "answer_vote-#{answer.id}" 
+        p= "#{answer.rate}"
+      div class= "vote_answers_errors-#{answer.id}"
+      div class= "answer_vote_select-#{answer.id}"
+        = render 'shared/vote', votable: answer
     br

@@ -39,5 +39,5 @@ $(document).on('turbolinks:load', ready_question_file)
 $(document).ready(hide_textarea_save)
 $(document).on('turbolinks:load', hide_textarea_save)
 
-$(document).ready(MyNamespace.sharedFunction)
-$(document).on('turbolinks:load', MyNamespace.sharedFunction)
+$(document).ready(SelectVotable.sharedFunction)
+$(document).on('turbolinks:load', SelectVotable.sharedFunction)

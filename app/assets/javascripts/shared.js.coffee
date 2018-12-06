@@ -1,4 +1,4 @@
-class MyNamespace
+class SelectVotable
   @sharedFunction = ->
     $('.common_vote_bind').bind 'ajax:success', (e) ->
       [data, status, xhr] = e.detail

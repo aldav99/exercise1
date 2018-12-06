@@ -9,7 +9,7 @@ module Voted
     @vote = @votable.votes.build(vote: 1, user: current_user)
     respond_to do |format|
       if @vote.save
-        res = {rate: @votable.rate, id: @votable.id, type: @vote.votable_type, type: @vote.votable_type}
+        res = {rate: @votable.rate, id: @votable.id, type: @vote.votable_type}
         format.json { render json: res }
       else
         res = {errors: @vote.errors.full_messages, id: @vote.votable_id}

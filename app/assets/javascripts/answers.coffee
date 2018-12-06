@@ -13,5 +13,5 @@ ready = ->
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)
 
-$(document).ready(MyNamespace.sharedFunction)
-$(document).on('turbolinks:load', MyNamespace.sharedFunction)
+$(document).ready(SelectVotable.sharedFunction)
+$(document).on('turbolinks:load', SelectVotable.sharedFunction)

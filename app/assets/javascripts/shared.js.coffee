@@ -17,6 +17,6 @@ class SelectVotable
         $(vote_errors).append(value)
 
 root             = exports ? this
-root.MyNamespace = MyNamespace
+root.SelectVotable = SelectVotable
 
 

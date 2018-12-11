@@ -5,6 +5,8 @@ RSpec.configure do |config|
 
   config.include AcceptanceHelper, type: :feature
 
+  Capybara.server = :puma
+
   config.use_transactional_fixtures = false
 
   config.before(:suite) do

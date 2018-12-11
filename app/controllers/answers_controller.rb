@@ -3,6 +3,7 @@ class AnswersController < ApplicationController
   
   before_action :find_answer, only: %i[ show edit update destroy best]
   before_action :find_question, only: %i[ create ]
+  after_action :publish_answer, only: [:create]
   protect_from_forgery except: :best
 
 
@@ -71,5 +72,29 @@ class AnswersController < ApplicationController
 
     def answer_params
       params.require(:answer).permit(:body, :correct, attachments_attributes: [:id,:file, :_destroy])
+    end
+
+    def publish_answer
+      return if @answer.errors.any?
+      attachments = []
+      @answer.attachments.each do |attachment|
+        attach = {}
+        attach[:id] = attachment.id
+        attach[:file_url] = attachment.file.url
+        attach[:file_name] = attachment.file.identifier
+        attachments << attach
+      end
+
+      ActionCable.server.broadcast(
+        "answers_#{@question.id}",
+        answer: @answer,
+        answer_attachments: attachments,
+        answer_votes: @answer.votes,
+        question_user_id: @answer.question.user_id
+        # ApplicationController.render(
+        #   partial: 'answers/answer',
+        #   locals: { answer: @answer }
+        # )
+      )
     end
 end

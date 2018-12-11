@@ -1,6 +1,6 @@
 .question-update-errors
 h2= "Title:"
-.question
+div class = "question" id = "#{@question.id}"
   h3 class="update-#{@question.id}"= @question.title
   - if current_user&.author_of?(@question)
       p= link_to 'Edit', '', class: 'edit-question-link-title', data: { question_id: @question.id }

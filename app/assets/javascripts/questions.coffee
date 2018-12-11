@@ -41,3 +41,5 @@ $(document).on('turbolinks:load', hide_textarea_save)
 
 $(document).ready(SelectVotable.sharedFunction)
 $(document).on('turbolinks:load', SelectVotable.sharedFunction)
+
+

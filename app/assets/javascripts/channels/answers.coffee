@@ -18,3 +18,5 @@ App.answers = App.cable.subscriptions.create channel: 'AnswersChannel',
     unless @installedPageChangeCallback
       @installedPageChangeCallback = true
       $(document).on 'turbolinks:load', -> App.answers.followCurrentMessage()
+
+

@@ -5,7 +5,9 @@ cable = ->
     ,
 
     received: (data) ->
-      $("tbody").append data
+      console.log("Recieved data")
+      console.log(data.question.id)
+      $("tbody").append JST['templates/question']({object: data})
   })
 
 $(document).on('turbolinks:load', cable)

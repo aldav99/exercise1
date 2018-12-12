@@ -66,12 +66,29 @@ class QuestionsController < ApplicationController
 
   def publish_question
     return if @question.errors.any?
+      attachments = []
+      @question.attachments.each do |attachment|
+        attach = {}
+        attach[:id] = attachment.id
+        attach[:file_url] = attachment.file.url
+        attach[:file_name] = attachment.file.identifier
+        attachments << attach
+      end
+
+    # ActionCable.server.broadcast(
+    #   'questions',
+    #   ApplicationController.render(
+    #     partial: 'questions/question',
+    #     locals: { question: @question }
+    #   )
+    # )
+
     ActionCable.server.broadcast(
-      'questions',
-      ApplicationController.render(
-        partial: 'questions/question',
-        locals: { question: @question }
+        'questions',
+        question: @question,
+        question_attachments: attachments,
+        question_votes: @question.votes,
+        question_user_id: @question.user_id
       )
-    )
   end
 end

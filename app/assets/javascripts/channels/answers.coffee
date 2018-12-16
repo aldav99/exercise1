@@ -8,6 +8,8 @@ App.answers = App.cable.subscriptions.create channel: 'AnswersChannel',
   received: (data) ->
     console.log("AnswersChannel start")
     console.log(data['answer'])
+    return if gon.current_user_id == data.answer.user_id
+    $(".answers").append JST['templates/answer']({object: data})
 
   followCurrentMessage: ->
     if gon.question_id

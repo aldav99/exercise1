@@ -16,6 +16,15 @@
       p= link_to 'Delete answer', answer, method: :delete, data: {confirm: 'Are you sure?', remote: true}
     - if current_user&.author_of?(answer.question) && !answer.best
         p= link_to 'Best answer?', best_answer_path(answer), remote: true
+    div class= "comment-answer-#{answer.id}"
+      = render answer.comments
+      p= link_to 'Add comment', '', class: 'add-comment-answer', data: { answer_id: answer.id }
+      = form_for [answer, answer.comments.new], url: add_comment_answer_path(answer), html: { id: "comment-answer-#{answer.id}"}, remote: true, data: { format: :json } do |a|
+        p
+          = a.label :body, 'Your comment'
+          div class= "answer_comments_errors-#{answer.id}"
+          = a.text_area :body
+        = a.submit 'Create'
     .common_vote_bind
       p= "Vote:"
       div class= "answer_vote-#{answer.id}" 

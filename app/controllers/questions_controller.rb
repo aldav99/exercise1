@@ -1,9 +1,11 @@
 class QuestionsController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   after_action :publish_question, only: [:create]
+  # after_action :publish_comment, only: [:add_comment]
   
   def index
     @questions = Question.all
@@ -66,14 +68,14 @@ class QuestionsController < ApplicationController
 
   def publish_question
     return if @question.errors.any?
-      attachments = []
-      @question.attachments.each do |attachment|
-        attach = {}
-        attach[:id] = attachment.id
-        attach[:file_url] = attachment.file.url
-        attach[:file_name] = attachment.file.identifier
-        attachments << attach
-      end
+    attachments = []
+    @question.attachments.each do |attachment|
+      attach = {}
+      attach[:id] = attachment.id
+      attach[:file_url] = attachment.file.url
+      attach[:file_name] = attachment.file.identifier
+      attachments << attach
+    end
 
     # ActionCable.server.broadcast(
     #   'questions',
@@ -91,4 +93,12 @@ class QuestionsController < ApplicationController
         question_user_id: @question.user_id
       )
   end
+
+  # def publish_comment
+  #   return if @comment.errors.any?
+  #   ActionCable.server.broadcast(
+  #       "comment_#{@comment.commentable.id}",
+  #       comment: @comment
+  #     )
+  # end
 end

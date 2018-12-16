@@ -19,9 +19,16 @@ Rails.application.routes.draw do
     delete :vote_reset, on: :member
   end
 
+  concern :commentable do 
+    post :add_comment, on: :member
+  end
+
   resources :questions, concerns: [:votable], shallow: true do
     resources :answers, concerns: [:votable]
   end
+
+  resources :questions, concerns: :commentable
+  resources :answers, concerns: :commentable
 
   root to: "questions#index"
 

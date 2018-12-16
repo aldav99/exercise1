@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   include Voted
+  include Commented
   
   before_action :find_answer, only: %i[ show edit update destroy best]
   before_action :find_question, only: %i[ create ]
@@ -90,11 +91,8 @@ class AnswersController < ApplicationController
         answer: @answer,
         answer_attachments: attachments,
         answer_votes: @answer.votes,
+        rate: @answer.rate,
         question_user_id: @answer.question.user_id
-        # ApplicationController.render(
-        #   partial: 'answers/answer',
-        #   locals: { answer: @answer }
-        # )
       )
     end
 end

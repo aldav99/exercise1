@@ -23,6 +23,19 @@ h2= "Body:"
         = f.text_area :body
         = f.submit 'Save'
 
+h3= "Comments:"
+.question_comments
+  = render @question.comments
+p
+.comment
+  p= link_to 'Add comment', '', class: 'add-comment-question', data: { question_id: @question.id }
+  = form_for [@question, @question.comments.new], url: {action: "add_comment"}, html: { id: "comment-question-#{@question.id}"}, remote: true, data: { format: :json } do |a|
+    p
+      = a.label :body, 'Your comment'
+      .question_comments_errors
+      = a.text_area :body
+    = a.submit 'Create'
+
 .common_vote_bind
   h2 class="vote_questions"= "Vote:"
   .vote_questions_errors

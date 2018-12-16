@@ -1,0 +1,26 @@
+div class= "answer_content" 
+  p class= "update-#{@object.answer.id}" id="#{@object.answer.best}" #{@object.answer.body}
+  table
+    tbody id = "answer_attachments-#{@object.answer.id}"
+      -if @object.answer_attachments.length > 0
+        -for attachment in @object.answer_attachments
+          tr
+            td
+              a href="#{attachment.file_url}" #{attachment.file_name}
+  - if gon.user_signed_in && @object.question_user_id == gon.current_user_id && !@object.answer.best
+      p
+        a data-remote="true" href="/answers/#{@object.answer.id}/best" Best answer?
+  .common_vote_bind
+    p Vote:
+    div class= "answer_vote-#{@object.answer.id}" 
+      p #{@object.rate}
+    div class= "vote_answers_errors-#{@object.answer.id}"
+    div class= "answer_vote_select-#{@object.answer.id}"
+      - if gon.current_user_id
+        p
+          a data-format="json" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@object.answer.id}/vote_up" Like
+        p
+          a data-format="json" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@object.answer.id}/vote_down" DisLike
+        p
+          a data-format="json" data-remote="true" rel="nofollow" data-method="delete" href="/answers/#{@object.answer.id}/vote_reset" Reset
+  br

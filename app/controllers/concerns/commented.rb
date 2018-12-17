@@ -24,8 +24,13 @@ module Commented
 
   def publish_comment
     return if @comment.errors.any?
+    if @comment.commentable_type.downcase == "question"
+      @id = @comment.commentable.id
+    else
+      @id = @comment.commentable.question.id
+    end
     ActionCable.server.broadcast(
-        "comment_#{@comment.commentable.id}",
+        "comment_#{@comment.commentable_type.downcase}_#{@id}",
         comment: @comment
       )
   end

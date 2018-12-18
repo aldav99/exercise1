@@ -60,13 +60,6 @@ feature 'Create question', %q{
         expect(page).to have_content 'text text'
         expect(page).to have_content 'Test question'
         save_and_open_page
-        # page.find("#add_question_btn").trigger('click')
-
-        # fill_in 'Title', with: 'Test question'
-        # fill_in 'Body', with: 'test text'
-        # click_on 'Save'
-        # expect(page).to have_content 'Test question'
-        # expect(page).to have_content 'test text'
       end
 
       Capybara.using_session('guest') do

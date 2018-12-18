@@ -7,6 +7,7 @@ feature 'User answer', %q{
 } do
 
   given(:user) { create(:user) }
+  given(:guest) { create(:user) }
   given!(:question) { create(:question) }
 
   scenario 'Authenticated user create answer', js: true do
@@ -22,4 +23,33 @@ feature 'User answer', %q{
       expect(page).to have_content 'My answer'
     end
   end
+
+  context "mulitple sessions" do
+    scenario "answer appears on another user's page", js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+ 
+      Capybara.using_session('guest') do
+        sign_in(guest)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'Your answer', with: 'My answer'
+        within '.new_answer' do 
+          click_on 'Create'
+        end
+
+        within '.answers' do
+          expect(page).to have_content 'My answer'
+        end
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'My answer'
+      end
+    end
+  end  
 end

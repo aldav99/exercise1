@@ -77,14 +77,6 @@ class QuestionsController < ApplicationController
       attachments << attach
     end
 
-    # ActionCable.server.broadcast(
-    #   'questions',
-    #   ApplicationController.render(
-    #     partial: 'questions/question',
-    #     locals: { question: @question }
-    #   )
-    # )
-
     ActionCable.server.broadcast(
         'questions',
         question: @question,
@@ -93,12 +85,4 @@ class QuestionsController < ApplicationController
         question_user_id: @question.user_id
       )
   end
-
-  # def publish_comment
-  #   return if @comment.errors.any?
-  #   ActionCable.server.broadcast(
-  #       "comment_#{@comment.commentable.id}",
-  #       comment: @comment
-  #     )
-  # end
 end

@@ -20,6 +20,7 @@ feature 'Create question', %q{
 
     expect(page).to have_content 'text text'
     expect(page).to have_content 'Test question'
+    expect(page).to have_content 'Question was successfully created'
   end
 
   scenario "Validation's error" do

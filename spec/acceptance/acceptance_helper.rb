@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.configure do |config|
-  # Capybara.javascript_driver = :webkit
+  Capybara.javascript_driver = :webkit
   # Иныче не проходит тест на появление одновременного ответа 
-  Capybara.javascript_driver = :selenium
+  # Capybara.javascript_driver = :selenium
 
   config.include AcceptanceHelper, type: :feature
 
-  Capybara.server = :puma, { Silent: true }
+  Capybara.server = :puma
 
   config.use_transactional_fixtures = false
 

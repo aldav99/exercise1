@@ -1,59 +1,42 @@
 class QuestionsController < ApplicationController
+  respond_to :html, :js
+
   include Voted
   include Commented
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   after_action :publish_question, only: [:create]
-  # after_action :publish_comment, only: [:add_comment]
+  before_action :build_answer, only: :show
+  before_action :current_user_not_author_error?, only: [:update, :destroy]
   
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = @question.answers.build
-    @answer.attachments.build
     gon.question_id = @question.id
+    respond_with @question
   end
 
   def new
-    @question = current_user.questions.build
-    @question.attachments.build
+    respond_with(@question = current_user.questions.build)
   end
 
   def edit
   end
 
   def create
-    @question = current_user.questions.new(question_params)
-    
-    if @question.save
-      flash[:notice] = 'Your question successfully created.'
-      redirect_to @question
-    else
-      render :new
-    end
+    respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
-    if current_user.author_of?(@question)
-      @question.update(question_params)
-    else
-      respond_to do |format|
-        format.js { flash[:notice] = "You aren't author." }
-      end
-    end
+    @question.update(question_params)
+    respond_with @question
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
-      flash[:notice] = "The question is deleted!!!."
-    else
-      flash[:notice] = "You aren't author."
-    end
-    redirect_to root_path
+    respond_with(@question.destroy, location: :root)
   end
 
   private
@@ -64,6 +47,19 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:id,:file, :_destroy])
+  end
+
+  def build_answer
+    @answer = @question.answers.build
+  end
+
+  def current_user_not_author_error?
+    unless current_user.author_of?(@question)
+      respond_to do |format|
+        format.html {redirect_to root_path}
+        format.js { render :update, notice: "You aren't author." }
+      end
+    end
   end
 
   def publish_question

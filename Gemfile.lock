@@ -307,6 +307,7 @@ DEPENDENCIES
   rails-controller-testing
   redis (~> 3.2)
   remotipart
+  responders
   rspec-rails
   sass-rails (~> 5.0)
   selenium-webdriver

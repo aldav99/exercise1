@@ -77,6 +77,10 @@ gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
 gem 'responders'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-vkontakte'
+gem 'omniauth-github'
 
 group :test, :development do
   gem 'rspec-rails'

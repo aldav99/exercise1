@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:vkontakte, :github, :facebook]
+         :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:github, :vkontakte] #, :facebook]
 
   has_many :answers
   has_many :comments
@@ -15,10 +15,14 @@ class User < ApplicationRecord
   end
 
   def self.find_for_oauth(auth)
+    puts "-----------------#{auth}-------------------"
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
+    puts "---CLASS--------#{authorization.nil?}-------------------"
     return authorization.user if authorization
+    puts "---------PRIVET-------------------"
 
     email = auth.info[:email]
+    puts "-----------------#{email}-------------------"
     user = User.where(email: email).first
     if user
       user.create_authorization(auth)

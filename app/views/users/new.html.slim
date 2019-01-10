@@ -1,0 +1,5 @@
+= form_for @user do |f|
+  p
+    = f.label :email
+    = f.email_field :email, autofocus: true, autocomplete: "email"
+  p= f.submit 'Create'

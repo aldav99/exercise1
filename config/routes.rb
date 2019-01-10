@@ -1,17 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 
-  # unauthenticated do
-  #   root :to => 'devise/sessions#new'
-  # end
-
-  # authenticated do
-  #   root :to => 'questions#index'
-  # end
-
-  # concern :votable do
-  #   resources :votes
-  # end
+  devise_scope :user do 
+    post '/create_email' => 'omniauth_callbacks#create_email'
+  end 
 
   concern :votable do 
     post :vote_up, on: :member

@@ -263,7 +263,7 @@ Devise.setup do |config|
 
   config.omniauth :vkontakte, Rails.application.credentials.vkontakte_app_id, Rails.application.credentials.vkontakte_app_secret, scope: [:email]
 
-  config.omniauth :github, Rails.application.credentials.github_app_id, Rails.application.credentials.github_app_secret, scope: [:email] #[user:email]
+  config.omniauth :github, Rails.application.credentials.github_app_id, Rails.application.credentials.github_app_secret, scope: [:email], provider_ignores_state: true #[user:email]
   
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

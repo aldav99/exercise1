@@ -69,6 +69,9 @@ GEM
       rack (>= 1.6.0)
       rack-test (>= 0.6.3)
       xpath (~> 3.1)
+    capybara-email (3.0.1)
+      capybara (>= 2.4, < 4.0)
+      mail
     carrierwave (1.2.3)
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
@@ -313,6 +316,7 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
   capybara
+  capybara-email
   capybara-webkit!
   carrierwave
   chromedriver-helper

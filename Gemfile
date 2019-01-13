@@ -92,6 +92,7 @@ group :test, :development do
   gem 'launchy'
   gem 'database_cleaner'
   gem 'capybara-webkit', github: 'thoughtbot/capybara-webkit', branch: 'master'
+  gem 'capybara-email'
 end
 
 group :test do

@@ -43,6 +43,38 @@ Rails.application.configure do
 
   config.action_cable.disable_request_forgery_protection = true
 
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new({
+    'provider' => 'github',
+    'uid' => '123545',
+    'info' => {
+      'name' => 'mockuser',
+      'image' => 'mockuser_avatar_url'
+    }
+  })
+
+  OmniAuth.config.mock_auth[:vkontakte] = OmniAuth::AuthHash.new({
+    'provider' => 'vkontakte',
+    'uid' => '123545',
+    'info' => {
+      "email"=> 'nu_pogodi@mail.ru',
+      'name' => 'mockuser',
+      'image' => 'mockuser_avatar_url'
+    }
+  })
+
+  OmniAuth.config.mock_auth[:create_email] = OmniAuth::AuthHash.new({
+    'provider' => 'create_email',
+    'uid' => '123545',
+    'info' => {
+      "email"=> 'dfdg@mail.ru',
+      'name' => 'mockuser',
+      'image' => 'mockuser_avatar_url'
+    }
+  })
+
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end

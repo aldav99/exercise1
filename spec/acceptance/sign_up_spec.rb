@@ -44,5 +44,40 @@ feature 'User signs up' do
     expect(page).to have_content 'Email is invalid'
     expect(current_path).to eq user_registration_path
   end
+
+  scenario 'can sign in user with Vkontakte account' do
+    visit '/'
+    
+    click_on 'Log in'
+
+    expect(page).to have_content('Sign in with Vkontakte')
+    click_on 'Sign in with Vkontakte'
+    expect(page).to have_content('Successfully authenticated from Vkontakte account')
+    expect(page).to have_content("Log out")
+  end
+
+  scenario 'can sign in user with GitHub account with proper email' do
+    visit '/'
+    
+    click_on 'Log in'
+
+    expect(page).to have_content('Sign in with GitHub')
+    
+    click_on 'Sign in with GitHub'
+    
+    expect(page).to have_content('Promt your Email')
+
+    fill_in 'auth[info][email]', with: 'testtest@test.com'
+    click_on 'Submit'
+
+    open_email('testtest@test.com')
+    current_email.click_link 'Confirm my account'
+    
+    expect(page).to have_content 'Your email address has been successfully confirmed'
+    click_on 'Sign in with GitHub'
+
+    expect(page).to have_content 'Successfully authenticated from github account'
+    expect(page).to have_content("Log out")
+  end
 end
 

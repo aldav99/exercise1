@@ -76,7 +76,7 @@ feature 'User signs up' do
     expect(page).to have_content 'Your email address has been successfully confirmed'
     click_on 'Sign in with GitHub'
 
-    expect(page).to have_content 'Successfully authenticated from github account'
+    expect(page).to have_content 'Successfully authenticated from Github account'
     expect(page).to have_content("Log out")
   end
 end

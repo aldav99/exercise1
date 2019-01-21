@@ -31,7 +31,8 @@ RSpec.describe AttachmentsController, type: :controller do
 
       it "redirect to quetion's show" do
         delete :destroy, params: { id: my_attachment }, format: :js 
-        expect(response).to render_template :destroy
+        # expect(response).to render_template :destroy
+        expect(response).to redirect_to root_url
       end
     end
   end

@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  let(:user) { create(:user) }
+  let(:users_question) { create(:question, user: user) }
+
   let(:question) { create(:question) }
   let(:author) { create(:user_with_questions) }
 
@@ -58,12 +61,13 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
-    sign_in_user
-    
-    before { get :edit, params: { id: question } }
+    before do 
+      sign_in(user)
+      get :edit, params: { id: users_question }
+    end
 
     it 'assigns the requested question to @question' do
-      expect(assigns(:question)).to eq question
+      expect(assigns(:question)).to eq users_question
     end
 
     it 'renders edit view' do

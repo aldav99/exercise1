@@ -82,6 +82,8 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-vkontakte'
 gem 'omniauth-github'
+gem 'cancancan'
+gem 'pundit'
 
 group :test, :development do
   gem 'rspec-rails'

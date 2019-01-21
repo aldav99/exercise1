@@ -7,6 +7,8 @@ module Commented
   end
 
   def add_comment
+    # authorize! :add_comment, Comment
+    authorize! :create, Comment
     @comment = @commentable.comments.build(comment_params)
     @comment.user = current_user
     respond_to do |format|

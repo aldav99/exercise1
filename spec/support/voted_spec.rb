@@ -22,7 +22,8 @@ shared_examples "voted" do
 
       it "responds with error" do
         post :vote_up, params: {id: @author_votable, format: :json}
-        expect(response).to have_http_status(:unprocessable_entity)
+        # expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to redirect_to root_url
       end
     end
   end
@@ -43,7 +44,8 @@ shared_examples "voted" do
 
       it "responds with error" do
         post :vote_down, params: {id: @author_votable, format: :json}
-        expect(response).to have_http_status(:unprocessable_entity)
+        # expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to redirect_to root_url
       end
     end
   end
@@ -55,11 +57,6 @@ shared_examples "voted" do
         post :vote_reset, params: {id: votable, format: :json}
         expect(response).to have_http_status(:success)
       end
-    
-      it "Do not delete empty vote" do
-        post :vote_reset, params: {id: votable, format: :json}
-        expect(response).to have_http_status(:unprocessable_entity)
-      end
     end
   
     context 'author of votable' do
@@ -70,7 +67,8 @@ shared_examples "voted" do
 
       it "responds with error" do
         post :vote_reset, params: {id: @author_votable, format: :json}
-        expect(response).to have_http_status(:unprocessable_entity)
+        # expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to redirect_to root_url
       end
     end
   end

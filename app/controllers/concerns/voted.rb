@@ -6,6 +6,7 @@ module Voted
   end
 
   def vote_up
+    authorize! :vote_up, @votable
     @vote = @votable.votes.build(vote: 1, user: current_user)
     respond_to do |format|
       if @vote.save
@@ -19,6 +20,7 @@ module Voted
   end
 
   def vote_down
+    authorize! :vote_down, @votable
     @vote = @votable.votes.build(vote: -1, user: current_user)
     respond_to do |format|
       if @vote.save
@@ -32,6 +34,7 @@ module Voted
   end
 
   def vote_reset
+    authorize! :vote_reset, @votable
     vote = @votable.votes.find_by_user_id(current_user.id)
     # &. не работает: не определен destroy у NIL class vote
     if vote && vote.destroy 

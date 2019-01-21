@@ -12,11 +12,13 @@ class AnswersController < ApplicationController
   end
 
   def show
+    authorize! :read, Answer
     @question = @answer.question
   end
 
 
   def create
+    authorize! :create, Answer
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
     if @answer.save
@@ -25,6 +27,7 @@ class AnswersController < ApplicationController
   end
 
   def update
+    authorize! :update, @answer
     if current_user.author_of?(@answer)
       # @answer.attachments.each { |a| a.save! }
       @answer.update(answer_params)
@@ -37,6 +40,7 @@ class AnswersController < ApplicationController
   end
 
   def best
+    authorize! :best, @answer
     @question = @answer.question
     if current_user.author_of?(@question)
       @answer.toggle_best
@@ -48,6 +52,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, @answer
     if current_user.author_of?(@answer)
       @answer.destroy
       respond_to do |format|

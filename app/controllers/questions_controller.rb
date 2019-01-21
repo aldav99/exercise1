@@ -11,15 +11,18 @@ class QuestionsController < ApplicationController
   before_action :current_user_not_author_error?, only: [:update, :destroy]
   
   def index
+    authorize! :read, Question
     respond_with(@questions = Question.all)
   end
 
   def show
+    authorize! :read, @question
     gon.question_id = @question.id
     respond_with @question
   end
 
   def new
+    authorize! :create, Question
     respond_with(@question = current_user.questions.build)
   end
 
@@ -31,11 +34,13 @@ class QuestionsController < ApplicationController
   end
 
   def update
+    authorize! :update, @question
     @question.update(question_params)
     respond_with @question
   end
 
   def destroy
+    authorize! :destroy, @question
     respond_with(@question.destroy, location: :root)
   end
 

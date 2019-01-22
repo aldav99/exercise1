@@ -24,17 +24,13 @@ class Ability
   def user_abilities
     guest_abilities
     can :create, [Question, Answer, Comment]
-    can :update, [Question, Answer], user: user
-    can :destroy, [Question, Answer], user: user
+    can :update, [Question, Answer], user_id: user.id
+    can :destroy, [Question, Answer], user_id: user.id
     
     can :create, Attachment
     can :destroy, Attachment, attachmentable: { user_id: user.id }
 
-    can :vote_up, [Question, Answer] do |votable|
-      !user.author_of?(votable)
-    end
-
-    can :vote_down, [Question, Answer] do |votable|
+    can [:vote_up,:vote_down], [Question, Answer] do |votable|
       !user.author_of?(votable)
     end
 

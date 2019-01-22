@@ -22,8 +22,8 @@ shared_examples "voted" do
 
       it "responds with error" do
         post :vote_up, params: {id: @author_votable, format: :json}
-        # expect(response).to have_http_status(:unprocessable_entity)
-        expect(response).to redirect_to root_url
+        expect(response).to have_http_status(:forbidden)
+        # expect(response).to redirect_to root_url
       end
     end
   end
@@ -44,8 +44,8 @@ shared_examples "voted" do
 
       it "responds with error" do
         post :vote_down, params: {id: @author_votable, format: :json}
-        # expect(response).to have_http_status(:unprocessable_entity)
-        expect(response).to redirect_to root_url
+        expect(response).to have_http_status(:forbidden)
+        # expect(response).to redirect_to root_url
       end
     end
   end
@@ -67,8 +67,8 @@ shared_examples "voted" do
 
       it "responds with error" do
         post :vote_reset, params: {id: @author_votable, format: :json}
-        # expect(response).to have_http_status(:unprocessable_entity)
-        expect(response).to redirect_to root_url
+        expect(response).to have_http_status(:forbidden)
+        # expect(response).to redirect_to root_url
       end
     end
   end

@@ -81,7 +81,8 @@ RSpec.describe AnswersController, type: :controller do
       it 'render best template' do
         get :best, params: {id: @answer}, format: :js
         # expect(response).to render_template :best
-        expect(response).to redirect_to root_url
+        expect(response).to have_http_status(:forbidden)
+        # expect(response).to redirect_to root_url
       end
     end
   end
@@ -170,7 +171,8 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirect to index view' do
         delete :destroy, params: { id: author.answers[0] }, format: :js
-        expect(response).to redirect_to root_path
+        # expect(response).to redirect_to root_path
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

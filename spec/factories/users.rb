@@ -7,7 +7,7 @@ FactoryBot.define do
     email
     password {"12345678"}
     password_confirmation {"12345678"}
-
+    
     factory :user_with_answers do
       transient do
         answers_count { 5 }

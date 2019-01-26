@@ -84,6 +84,8 @@ gem 'omniauth-vkontakte'
 gem 'omniauth-github'
 gem 'cancancan'
 gem 'pundit'
+gem 'doorkeeper', '4.2.6'
+gem 'rest-client'
 
 group :test, :development do
   gem 'rspec-rails'
@@ -99,5 +101,6 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'json_spec'
 end
 

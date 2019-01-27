@@ -7,7 +7,7 @@ class Api::V1::ProfilesController < ApplicationController#Api::V1::BaseControlle
     respond_with current_resource_owner
   end
 
-  def index
+  def show
     @users = User.where.not(id: current_resource_owner)
     respond_with @users, root: 'users'
   end

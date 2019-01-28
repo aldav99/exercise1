@@ -28,7 +28,9 @@ Rails.application.routes.draw do
       resource :profiles do
         get :me, on: :collection
       end
-      resources :questions
+      resources :questions, shallow: true do
+        resources :answers
+      end
     end
   end
 

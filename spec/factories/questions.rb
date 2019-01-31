@@ -25,4 +25,10 @@ FactoryBot.define do
     title { nil }
     body { nil }
   end
+
+  factory :fix_question, class: "Question" do
+    user
+    title { "title" }
+    body { "body" }
+  end
 end

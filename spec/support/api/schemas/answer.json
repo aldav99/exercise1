@@ -1,0 +1,13 @@
+{
+    "type": "object",
+    "answer": {
+      "required": ["id", "body", "correct", "best", "user_id" ],
+      "id": {"type": "integer"},
+      "body": {"type": "string"},
+      "created_at": {"type": "datetime"},
+      "updated_at": {"type": "datetime"},
+      "correct": {"type": "boolean"},
+      "best": {"type": "boolean"},
+      "user_id": {"type": "integer"}
+    }
+  }

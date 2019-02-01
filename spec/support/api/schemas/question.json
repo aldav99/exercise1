@@ -1,0 +1,13 @@
+{
+    "type": "object",
+    "question": {
+      "required": ["id", "title", "body"],
+      "id": {"type": "integer"},
+      "title": {"type": "string"},
+      "body": {"type": "string"},
+      "created_at": {"type": "datetime"},
+      "updated_at": {"type": "datetime"},
+      "comments": {"type": "object"},
+      "attachments": {"type": "object"}
+    }
+  }

@@ -15,6 +15,14 @@ FactoryBot.define do
     user
     body { nil }
   end
+
+  factory :fix_answer, class: "Answer" do
+    question
+    user
+    body { "body" }
+    correct {true}
+    best {false}
+  end
 end
 
 

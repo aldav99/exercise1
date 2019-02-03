@@ -70,7 +70,6 @@ describe 'Answers API' do
       end
 
       it 'returns only one answer' do
-        puts "------------#{response.body}"
         expect(response.body).to have_json_size(1)
       end
 

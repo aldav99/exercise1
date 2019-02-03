@@ -36,6 +36,10 @@ describe 'Profile API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get '/api/v1/questions', params: {format: :json}.merge(options)
+    end
   end
 
   describe 'GET /index' do
@@ -66,13 +70,13 @@ describe 'Profile API' do
       end
 
       it "response contains 5 users" do
-        expect(@parse_response.length).to eq(5)
+        expect(response.body).to have_json_size(5).at_path("users")
       end
 
 
       it "response contains our's users" do
         users.each_index do |index|
-          expect(@parse_response[index]['users'].to_json).to be_json_eql(users[index].email.to_json).at_path('email')
+          expect(@parse_response['users'][index].to_json).to be_json_eql(users[index].email.to_json).at_path('email')
         end
       end
     end

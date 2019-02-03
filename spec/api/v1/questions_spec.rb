@@ -49,19 +49,9 @@ describe 'Questions API' do
   end
 
   describe 'GET /show' do
-    context 'unauthorized' do
-      let!(:question) { create(:question) }
+    let!(:question) { create(:question) }
 
-      it 'returns 401 status if there is no access_token' do
-        get '/api/v1/questions', params: {id: question, format: :json}
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        get '/api/v1/questions', params: {id: question, format: :json, access_token: '1234'}
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like "API Authenticable"
 
     context 'authorized' do
       let!(:user) { create(:user) }
@@ -106,25 +96,19 @@ describe 'Questions API' do
         end
       end
     end
+    def do_request(options = {})
+      get '/api/v1/questions', params: {id: question, format: :json}.merge(options)
+    end
   end
 
   describe 'POST /create' do
-    context 'unauthorized' do
 
-      it 'returns 401 status if there is no access_token' do
-        post '/api/v1/questions', params: {format: :json}
-        expect(response.status).to eq 401
-      end
+    it_behaves_like "API Authenticable"
 
-      it 'returns 401 status if access_token is invalid' do
-        post '/api/v1/questions', params: {format: :json, access_token: '1234'}
-        expect(response.status).to eq 401
-      end
-    end
+    let(:question) { create(:question) }
+    let(:access_token) { create(:access_token) }
 
     context 'authorized' do
-      let(:question) { create(:question) }
-      let(:access_token) { create(:access_token) }
 
       it 'returns 200 status code' do
         post '/api/v1/questions', params: {question: attributes_for(:question), format: :json, access_token: access_token.token} 
@@ -160,6 +144,10 @@ describe 'Questions API' do
           expect(response.body).to be_json_eql(question.send(attr.to_sym).to_json).at_path("question/#{attr}")
         end
       end
+    end
+
+    def do_request(options = {})
+      post '/api/v1/questions', params: {format: :json}.merge(options)
     end
   end
 end

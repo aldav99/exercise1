@@ -1,24 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:user) { create(:user) }
-  let(:users_question) { create(:question, user: user) }
 
   let(:question) { create(:question) }
   let(:author) { create(:user_with_questions) }
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 2) }
-
-    before { get :index }
-
-    it 'populates an array of all questions' do
-      expect(assigns(:questions)).to match_array(questions)
-    end
-
-    it 'renders index view' do
-      expect(response).to render_template :index
-    end
+    it_behaves_like "indexed", model: Question
   end
 
   describe 'GET #show' do

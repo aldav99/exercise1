@@ -8,6 +8,8 @@ FactoryBot.define do
     question
     user
     body
+    correct {true}
+    best {false}
   end
 
   factory :invalid_answer, class: "Answer" do

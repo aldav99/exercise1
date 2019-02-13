@@ -48,7 +48,6 @@ RSpec.describe Vote, type: :model do
       expect(@author_question_vote.errors.full_messages).to include("User can't be author")
     end
   end
-
 end
 
 

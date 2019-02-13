@@ -5,17 +5,11 @@ RSpec.describe Answer, type: :model do
   let!(:answer) { create(:answer, question: question) }
   let!(:answer_best) { create(:answer, question: question, best: true) }
 
-  it { should validate_presence_of :body }
+  it_behaves_like 'usable'
+
   it { should belong_to(:question) }
   it { should have_db_index(:question_id) }
   it { should have_db_index(:user_id) }
-  it { should have_many :attachments }
-  it { should have_many(:votes).dependent(:destroy) }
-  it { should have_many(:comments).dependent(:destroy) }
-
-  it { should accept_nested_attributes_for :attachments }
-
-  it_behaves_like "votable"
 
   describe "Best default false" do
     it {expect(answer.best).to be_falsey}
@@ -56,3 +50,4 @@ RSpec.describe Answer, type: :model do
     it {expect(answer_best.best).to be}
   end
 end
+

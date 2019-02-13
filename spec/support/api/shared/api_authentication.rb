@@ -14,7 +14,7 @@ shared_examples_for "API Authorizable" do |class_name_as_string|
     end
 
     it 'returns failure status code' do
-      invalid_object = 'invalid_' + class_name_as_string
+      # invalid_object = 'invalid_' + class_name_as_string
       do_request_post(@object_name => attributes_for(@invalid_object))
       expect(response).to_not be_success
     end

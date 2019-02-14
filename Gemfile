@@ -89,6 +89,9 @@ gem 'rest-client'
 gem 'active_model_serializers', '~> 0.9.3'
 gem 'oj'
 gem 'oj_mimic_json'
+gem 'whenever'
+gem 'daemons'
+gem 'delayed_job_active_record'
 
 group :test, :development do
   gem 'rspec-rails'

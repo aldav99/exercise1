@@ -22,4 +22,12 @@ class Answer < ApplicationRecord
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
   # accepts_nested_attributes_for :attachments, reject_if: proc { |attr| attr['file'].nil? }, allow_destroy: true
+
+  after_create :calculate_rating
+
+  private
+
+  def calculate_rating
+    Reputation.delay.calculate(self)
+  end
 end

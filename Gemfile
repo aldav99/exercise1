@@ -93,6 +93,8 @@ gem 'whenever'
 # gem 'daemons'
 # gem 'delayed_job_active_record'
 gem 'sidekiq', '~> 5.2.5'
+gem 'sinatra', '>= 1.3.0', require: nil
+gem 'sidetiq'
 
 group :test, :development do
   gem 'rspec-rails'

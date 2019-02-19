@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
   include Commented
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :unsubscribe, :subscribe]
   after_action :publish_question, only: [:create]
   before_action :build_answer, only: :show
   before_action :current_user_not_author_error?, only: [:update, :destroy]
@@ -42,6 +42,18 @@ class QuestionsController < ApplicationController
   def destroy
     authorize! :destroy, @question
     respond_with(@question.destroy, location: :root)
+  end
+
+  def subscribe
+    authorize! :subscribe, @question
+    @question.subscribers.create(user_id: current_user.id) unless current_user.subscriber_of?(@question)
+    respond_with @question
+  end
+
+  def unsubscribe
+    authorize! :unsubscribe, @question
+    current_user.unsubscribe_of(@question) if current_user.subscriber_of?(@question)
+    respond_with @question
   end
 
   private

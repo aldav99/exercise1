@@ -23,6 +23,13 @@ h2= "Body:"
         = f.text_area :body
         = f.submit 'Save'
 
+.question_subscribe
+  h2= "Subscribe:"
+  - if current_user&.unsubscriber_of?(@question)
+    td= link_to 'Subscribe', subscribe_question_path(@question), method: :post
+  - if current_user&.subscriber_of?(@question)
+    td= link_to 'Unsubscribe', unsubscribe_question_path(@question), method: :post
+
 h3= "Comments:"
 .question_comments
   = render @question.comments

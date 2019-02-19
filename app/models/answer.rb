@@ -21,11 +21,16 @@ class Answer < ApplicationRecord
   end
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
-  # accepts_nested_attributes_for :attachments, reject_if: proc { |attr| attr['file'].nil? }, allow_destroy: true
 
   after_create :update_reputation
+  after_commit :send_new_answer_notification, on: :create
+
 
   private
+
+  def send_new_answer_notification
+    NewAnswerNotificationJob.perform_now(self)
+  end
 
   def update_reputation
     CalculateReputationJob.perform_later(self)

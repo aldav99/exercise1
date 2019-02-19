@@ -8,12 +8,25 @@ class User < ApplicationRecord
 
   has_many :answers
   has_many :comments
+  has_many :subscribers, dependent: :destroy
   has_many :questions, dependent: :destroy
   has_many :votes, dependent: :destroy
   has_many :authorizations, dependent: :destroy
 
   def author_of?(obj)
     self.id == obj.user_id if obj.respond_to?(:user_id)
+  end
+
+  def subscriber_of?(question)
+    Subscriber.where(user_id: self.id, question_id: question.id).present?
+  end
+
+  def unsubscriber_of?(question)
+    !subscriber_of?(question)
+  end
+
+  def unsubscribe_of(question)
+    Subscriber.where(user_id: self.id, question_id: question.id).delete_all
   end
 
   def self.find_for_oauth(auth)

@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe User do
-  let(:user) { create(:user) }
-  let(:another_user) { create(:user) }
-  let(:question) { create(:question, user: user) }
+  let!(:user) { create(:user) }
+  let!(:another_user) { create(:user) }
+  let!(:question) { create(:question, user: user) }
+  let!(:subscriber) { create(:subscriber, question: question, user: user)}
 
   describe "Associations" do
     it { should have_many(:answers) }
@@ -16,6 +17,25 @@ RSpec.describe User do
     it { should validate_presence_of :email }
     it { should validate_presence_of :password }
   end
+
+  describe "subscriber_of?(question)" do
+    it "user.subscriber_of? question is true" do
+      expect(user).to be_subscriber_of(question)
+    end
+
+    it "another_user.subscriber_of? question is false" do
+      expect(another_user).to_not be_subscriber_of(question)
+    end
+  end
+
+  describe "unsubscribe_of(question)" do
+    before {user.unsubscribe_of(question)}
+    it "user.subscriber_of? question is false" do
+      expect(user).to_not be_subscriber_of(question)
+    end
+  end
+
+
 
   describe "author_of?" do
     it "user.author_of? question is true" do
@@ -93,15 +113,6 @@ RSpec.describe User do
           expect(authorization.uid).to eq auth.uid
         end
       end
-    end
-  end
-
-  describe '.send_daily_digest' do
-    let(:users) { create_list(:user, 2) }
-
-    it 'should send daily digest to all users' do
-      users.each { |user| expect(DailyMailer).to receive(:digest).with(user).and_call_original }
-      User.send_daily_digest
     end
   end
 end

@@ -128,6 +128,8 @@ ActiveRecord::Schema.define(version: 2019_02_18_050401) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id", "user_id"], name: "index_subscribers_on_question_id_and_user_id", unique: true
+    t.index ["question_id"], name: "index_subscribers_on_question_id"
+    t.index ["user_id"], name: "index_subscribers_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

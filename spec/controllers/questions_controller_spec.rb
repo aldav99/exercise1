@@ -56,6 +56,60 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'POST #subscribe' do
+    context 'any signed_in user' do
+      sign_in_user
+      it 'registered user can subscribe' do
+        expect { post :subscribe, params: { id: question } }.to change(question.subscribers, :count).by(1)
+      end
+
+      it 'render right template' do
+        post :subscribe, params: { id: question }
+        expect(response).to redirect_to question
+      end
+    end
+
+    context 'author' do
+      before {sign_in(author)}
+      it 'author can not subscribe' do
+        expect { post :subscribe, params: { id: author.questions[0] } }.to_not change(author.questions[0].subscribers, :count)
+      end
+
+      it 'render right template' do
+        post :subscribe, params: { id: author.questions[0] }
+        expect(response).to redirect_to author.questions[0]
+      end
+    end
+
+    context 'not signed_in user' do
+      it 'unregistered user can not subscribe' do
+        expect { post :subscribe, params: { id: question } }.to_not change(question.subscribers, :count)
+      end
+    end
+  end
+
+  describe 'POST #unsubscribe' do
+    context 'any signed_in subscribed user' do
+      sign_in_user
+      before { post :subscribe, params: { id: question } }
+
+      it 'registered user can unsubscribe' do
+        expect { post :unsubscribe, params: { id: question } }.to change(question.subscribers, :count).by(-1)
+      end
+
+      it 'render right template' do
+        post :unsubscribe, params: { id: question }
+        expect(response).to redirect_to question
+      end
+    end
+
+    context 'not signed_in user' do
+      it 'unregistered user can not unsubscribe' do
+        expect { post :unsubscribe, params: { id: question } }.to_not change(question.subscribers, :count)
+      end
+    end
+  end
+
   describe 'PATCH #update' do
     
     before do

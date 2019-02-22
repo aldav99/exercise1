@@ -9,7 +9,7 @@ class QuestionsController < ApplicationController
   after_action :publish_question, only: [:create]
   before_action :build_answer, only: :show
   before_action :current_user_not_author_error?, only: [:update, :destroy]
-  
+
   def index
     authorize! :read, Question
     respond_with(@questions = Question.all)
@@ -31,7 +31,9 @@ class QuestionsController < ApplicationController
 
   def create
     @question = current_user.questions.create(question_params)
-    @question.subscribers.create(user_id: current_user.id)
+    if @question.save
+      @question.subscribers.create(user_id: current_user.id)
+    end
     respond_with @question
   end
 
@@ -48,7 +50,7 @@ class QuestionsController < ApplicationController
 
   def subscribe
     authorize! :subscribe, @question
-    @question.subscribers.create(user_id: current_user.id) unless current_user.subscriber_of?(@question)
+    @question.subscribers.create(user_id: current_user.id) unless (current_user.subscriber_of?(@question) || current_user.author_of?(@question))
     respond_with @question
   end
 
@@ -71,6 +73,7 @@ class QuestionsController < ApplicationController
   def build_answer
     @answer = @question.answers.build
   end
+
 
   def current_user_not_author_error?
     unless current_user.author_of?(@question)

@@ -18,15 +18,11 @@ class User < ApplicationRecord
   end
 
   def subscriber_of?(question)
-    Subscriber.where(user_id: self.id, question_id: question.id).present?
+    self.subscribers.find_by(question_id: question.id).present?
   end
 
   def unsubscriber_of?(question)
     !subscriber_of?(question)
-  end
-
-  def unsubscribe_of(question)
-    Subscriber.where(user_id: self.id, question_id: question.id).delete_all
   end
 
   def self.find_for_oauth(auth)

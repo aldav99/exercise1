@@ -4,7 +4,6 @@ RSpec.describe User do
   let!(:user) { create(:user) }
   let!(:another_user) { create(:user) }
   let!(:question) { create(:question, user: user) }
-  let!(:subscriber) { create(:subscriber, question: question, user: user)}
 
   describe "Associations" do
     it { should have_many(:answers) }
@@ -27,15 +26,6 @@ RSpec.describe User do
       expect(another_user).to_not be_subscriber_of(question)
     end
   end
-
-  describe "unsubscribe_of(question)" do
-    before {user.unsubscribe_of(question)}
-    it "user.subscriber_of? question is false" do
-      expect(user).to_not be_subscriber_of(question)
-    end
-  end
-
-
 
   describe "author_of?" do
     it "user.author_of? question is true" do

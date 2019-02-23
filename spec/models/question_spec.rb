@@ -15,4 +15,19 @@ RSpec.describe Question, type: :model do
 
     it_behaves_like 'calculates reputation'
   end
+
+  describe 'subscribe_author' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+
+    it {expect(Subscriber.find_by(question_id: question).user).to eq user}
+  end
+
+  describe 'subscriber(user)' do
+    let!(:user) { create(:user) }
+    let!(:question) { create(:question) }
+    let!(:subscriber) { create(:subscriber, question: question, user: user) }
+
+    it {expect(question.subscriber(user)).to eq subscriber}
+  end
 end

@@ -8,7 +8,7 @@ feature 'subscribe question', %q{
 
   given!(:user) { create(:user) }
   given!(:question) { create(:question) }
-  given!(:author_question) { create(:question_with_subscriber, user: user) }
+  given!(:author_question) { create(:question, user: user) }
 
   given!(:subscribed_question) { create(:question) }
   given!(:subscriber) { create(:subscriber, user: user, question: subscribed_question) }
@@ -43,6 +43,6 @@ feature 'subscribe question', %q{
   scenario 'Author can unsubscribe', js:true do
     sign_in(user)
     visit question_path(author_question)
-    expect(page).to_not have_link "Unsubscribe"
+    expect(page).to have_link "Unsubscribe"
   end
 end

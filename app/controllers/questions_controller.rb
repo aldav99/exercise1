@@ -31,9 +31,6 @@ class QuestionsController < ApplicationController
 
   def create
     @question = current_user.questions.create(question_params)
-    if @question.save
-      @question.subscribers.create(user_id: current_user.id)
-    end
     respond_with @question
   end
 
@@ -46,18 +43,6 @@ class QuestionsController < ApplicationController
   def destroy
     authorize! :destroy, @question
     respond_with(@question.destroy, location: :root)
-  end
-
-  def subscribe
-    authorize! :subscribe, @question
-    @question.subscribers.create(user_id: current_user.id) unless (current_user.subscriber_of?(@question) || current_user.author_of?(@question))
-    respond_with @question
-  end
-
-  def unsubscribe
-    authorize! :unsubscribe, @question
-    current_user.unsubscribe_of(@question) if current_user.subscriber_of?(@question)
-    respond_with @question
   end
 
   private

@@ -26,9 +26,9 @@ h2= "Body:"
 .question_subscribe
   h2= "Subscribe:"
   - if current_user&.unsubscriber_of?(@question)
-    td= link_to 'Subscribe', subscribe_question_path(@question), method: :post
+    td= link_to 'Subscribe', question_subscribers_path(@question), method: :post
   - if current_user&.subscriber_of?(@question)
-    td= link_to 'Unsubscribe', unsubscribe_question_path(@question), method: :post
+    td= link_to 'Unsubscribe', subscriber_path(@question.subscriber(current_user)), method: :delete
 
 h3= "Comments:"
 .question_comments

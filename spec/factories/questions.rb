@@ -32,13 +32,4 @@ FactoryBot.define do
     title { "title" }
     body { "body" }
   end
-
-  factory :question_with_subscriber, class: "Question" do
-    user
-    title { "title" }
-    body { "body" }
-    after(:create) do |question, user|
-      Subscriber.create(user_id: user.id, question_id: question.id)
-    end
-  end
 end

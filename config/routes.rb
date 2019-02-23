@@ -43,10 +43,15 @@ Rails.application.routes.draw do
 
   root to: "questions#index"
 
-  resources :questions do 
-    post :subscribe, on: :member
-    post :unsubscribe, on: :member
+  # resources :questions do 
+  #   post :subscribe, on: :member
+  #   post :unsubscribe, on: :member
+  # end
+
+  resources :questions, shallow: true do
+    resources :subscribers, only: [:create,:destroy]
   end
+
 
   resources :answers do 
     get :best, on: :member

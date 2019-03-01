@@ -1,6 +1,17 @@
 - if can?(:create, Question)
   p= link_to 'Ask question', new_question_path
 
+- if current_user
+  = form_for :anything, url: searchof_index_path, method: :post do |s|
+    = s.select :search_type, options_for_select(%w(all question answer comment user))
+    br
+    = s.text_area :query
+    br
+    = s.submit "Search"
+
 table
   tbody
     =render @questions
+
+
+

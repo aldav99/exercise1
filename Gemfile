@@ -95,6 +95,8 @@ gem 'whenever'
 gem 'sidekiq', '~> 5.2.5'
 gem 'sinatra', '>= 1.3.0', require: nil
 gem 'sidetiq'
+gem 'mysql2'
+gem 'thinking-sphinx'
 
 group :test, :development do
   gem 'rspec-rails'

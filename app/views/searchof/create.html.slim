@@ -1,0 +1,17 @@
+table
+  thead
+    tr
+      th = "TITLE"
+      th = "BODY"
+      th = "USER EMAIL"
+  tbody
+  - @results.each do |result|
+    tr
+      td = (result.respond_to?(:title) ? result.title : "")
+      td = (result.respond_to?(:body) ? result.body : "")
+      td = (result.respond_to?(:user) ? result.user.email : result.email)
+
+p= link_to 'Back', root_path
+
+
+

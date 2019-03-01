@@ -1,10 +1,12 @@
 require_relative 'acceptance_helper'
+require 'rake'
+require 'thinking_sphinx/tasks'
 
 feature 'Can do search', %q{
   I want to be able to search
 } do
 
-  # given(:user) { create(:user) }
+  let!(:user) { create(:user) }
   # given(:question) { create(:question, title: "Privet!", user: user) }
   # given(:answer) { create(:answer, question: question, body: "ANSWER") }
   let!(:questions) { create_list(:question, 2) }
@@ -31,11 +33,18 @@ feature 'Can do search', %q{
 
   scenario 'Authenticate user find questions', js: true do
     ThinkingSphinx::Test.run do
-      index
+      # index
+      ThinkingSphinx::Test.index
       sign_in(user)
-      visit questions_path
-      fill_in 'anything_query', with: 'questionquestion'
-      click_on 'Search'
+      # visit questions_path
+      # save_and_open_page
+      # within('.new_search') do
+        fill_in 'anything_query', with: 'question'
+        # find('anything_query').set('question')
+        # save_and_open_page
+        click_on 'Search'
+      # end
+      # save_and_open_page
       questions.each do |question|
         expect(page).to have_content question.title
       end

@@ -49,6 +49,25 @@ RSpec.configure do |config|
   
   config.use_transactional_fixtures = false
 
+  config.before :each do |example|
+    if example.metadata[:type] == :request
+      ThinkingSphinx::Test.init
+      ThinkingSphinx::Test.start index: false
+    end
+
+    ThinkingSphinx::Configuration.instance.settings['real_time_callbacks'] =
+      (example.metadata[:type] == :request)
+  end
+
+  config.after(:each) do |example|
+    # Stop Sphinx and clear out data after request specs
+    if example.metadata[:type] == :request
+      ThinkingSphinx::Test.stop
+      ThinkingSphinx::Test.clear
+    end
+  end
+  # config.use_transactional_fixtures = true
+
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.

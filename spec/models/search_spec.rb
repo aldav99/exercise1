@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Searchof, type: :model do
+RSpec.describe Search, type: :model do
 
   it 'send request' do
     request = "sidekiq"
@@ -9,6 +9,6 @@ RSpec.describe Searchof, type: :model do
     expect(ThinkingSphinx::Query).to receive(:escape).with(request).and_call_original
     expect(ThinkingSphinx).to receive(:search).with(escape_query)
 
-    Searchof.query(request, "all")
+    Search.query(request, "all")
   end
 end

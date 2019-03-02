@@ -1,4 +1,4 @@
-class Searchof < ApplicationRecord
+class Search < ApplicationRecord
   SEARCH = %w(all question answer comment user)
 
   def self.query(request, search_type)

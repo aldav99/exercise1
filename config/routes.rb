@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     resources :subscribers, only: [:create,:destroy]
   end
 
-  resources :searchof, only: [:create]
+  resources :search, only: [:create]
 
 
   resources :answers do 

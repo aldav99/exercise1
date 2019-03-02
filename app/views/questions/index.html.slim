@@ -2,13 +2,12 @@
   p= link_to 'Ask question', new_question_path
 
 .new_search
-  - if current_user
-    = form_for :anything, url: searchof_index_path, method: :post do |s|
-      = s.select :search_type, options_for_select(%w(all question answer comment user))
-      br
-      = s.text_field :query
-      br
-      = s.submit "Search"
+  = form_for :anything, url: search_index_path, method: :post do |s|
+    = s.select :search_type, options_for_select(%w(all question answer comment user))
+    br
+    = s.text_field :query
+    br
+    = s.submit "Search"
 
 table
   tbody

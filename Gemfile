@@ -98,6 +98,14 @@ gem 'sidetiq'
 gem 'mysql2'
 gem 'thinking-sphinx'
 
+group :development do
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+end
+
+
 group :test, :development do
   gem 'rspec-rails'
   gem 'factory_bot_rails'

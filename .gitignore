@@ -30,7 +30,8 @@
 
 config/database.yml
 
-config/*.sphinx.conf
+config/test.sphinx.conf
+config/development.sphinx.conf
 db/sphinx
 
 /config/thinking_sphinx.yml

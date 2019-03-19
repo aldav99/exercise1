@@ -1,4 +1,4 @@
 tr
   td = link_to question.title, question_path(question)
   - if current_user&.author_of?(question)
-    td= link_to 'Delete question', question, :data => {:confirm => 'Are you sure?'}
+    td= link_to 'Delete question', question, method: :delete,:data => {:confirm => 'Are you sure?'}

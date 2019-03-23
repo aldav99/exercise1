@@ -114,7 +114,7 @@ end
 group :test, :development do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
-  gem 'factory_bot'
+  gem 'factory_bot', '4.11.1'
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'launchy'

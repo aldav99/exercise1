@@ -1,87 +1,88 @@
-.question-update-errors
-h2= "Title:"
-div class = "question" id = "#{@question.id}"
-  h3 class="update-#{@question.id}"= @question.title
-  - if current_user&.author_of?(@question)
-      p= link_to 'Edit', '', class: 'edit-question-link-title', data: { question_id: @question.id }
+- cache resource do
+  .question-update-errors
+  h2= "Title:"
+  div class = "question" id = "#{@question.id}"
+    h3 class="update-#{@question.id}"= @question.title
+    - if current_user&.author_of?(@question)
+        p= link_to 'Edit', '', class: 'edit-question-link-title', data: { question_id: @question.id }
+        p
+        = form_for @question, remote: true, html: { id: "edit-question-#{@question.id}"} do |f|
+          = f.label :title, "Question's title"
+          br
+          = f.text_area :title
+          = f.submit 'Save'
+
+  h2= "Body:"
+  .question_body
+    h3 class="update_body-#{@question.id}"= @question.body
+    - if current_user&.author_of?(@question)
+        p= link_to 'Edit', '', class: 'edit-question-link-body', data: { question_id: @question.id }
+        p
+        = form_for @question, remote: true, html: { id: "edit-question_body#{@question.id}"} do |f|
+          = f.label :body, "Question's body"
+          br
+          = f.text_area :body
+          = f.submit 'Save'
+
+  .question_subscribe
+    h2= "Subscribe:"
+    - if current_user&.unsubscriber_of?(@question)
+      td= link_to 'Subscribe', question_subscribers_path(@question), method: :post
+    - if current_user&.subscriber_of?(@question)
+      td= link_to 'Unsubscribe', subscriber_path(@question.subscriber(current_user)), method: :delete
+
+  h3= "Comments:"
+  .question_comments
+    = render @question.comments
+  p
+  .comment
+    p= link_to 'Add comment', '', class: 'add-comment-question', data: { question_id: @question.id }
+    = form_for [@question, @question.comments.new], url: {action: "add_comment"}, html: { id: "comment-question-#{@question.id}"}, remote: true, data: { format: :json } do |a|
       p
-      = form_for @question, remote: true, html: { id: "edit-question-#{@question.id}"} do |f|
-        = f.label :title, "Question's title"
-        br
-        = f.text_area :title
-        = f.submit 'Save'
+        = a.label :body, 'Your comment'
+        .question_comments_errors
+        = a.text_area :body
+      = a.submit 'Create'
 
-h2= "Body:"
-.question_body
-  h3 class="update_body-#{@question.id}"= @question.body
-  - if current_user&.author_of?(@question)
-      p= link_to 'Edit', '', class: 'edit-question-link-body', data: { question_id: @question.id }
-      p
-      = form_for @question, remote: true, html: { id: "edit-question_body#{@question.id}"} do |f|
-        = f.label :body, "Question's body"
-        br
-        = f.text_area :body
-        = f.submit 'Save'
+  .common_vote_bind
+    h2 class="vote_questions"= "Vote:"
+    .vote_questions_errors
+    .question_vote
+      p= "#{@question.rate}"
+    .question_vote_select
+      = render 'shared/vote', votable: @question
 
-.question_subscribe
-  h2= "Subscribe:"
-  - if current_user&.unsubscriber_of?(@question)
-    td= link_to 'Subscribe', question_subscribers_path(@question), method: :post
-  - if current_user&.subscriber_of?(@question)
-    td= link_to 'Unsubscribe', subscriber_path(@question.subscriber(current_user)), method: :delete
+  p Attachments:
 
-h3= "Comments:"
-.question_comments
-  = render @question.comments
-p
-.comment
-  p= link_to 'Add comment', '', class: 'add-comment-question', data: { question_id: @question.id }
-  = form_for [@question, @question.comments.new], url: {action: "add_comment"}, html: { id: "comment-question-#{@question.id}"}, remote: true, data: { format: :json } do |a|
+  table
+    tbody#attachments
+      =render @question.attachments
+
+  .question_file
+    - if current_user&.author_of?(@question)
+        p= link_to 'Edit', '', class: 'edit-question-link-file', data: { question_id: @question.id }
+        p
+        = form_for @question, remote: true, html: { id: "edit-question_file#{@question.id}"} do |f|
+          = f.fields_for :attachments, @question.attachments.build do |file|
+            = render 'shared/attachment_fields', f: file
+          = link_to_add_association 'add a file', f, :attachments, partial: 'shared/attachment_fields' 
+          p= f.submit 'Save'
+
+  h2= "Answers:"
+
+  .notice
+  .answers
+    =render @question.answers.order("best DESC")
+    
+  = form_for [@question, @answer], remote: true, data: { format: :json } do |f|
     p
-      = a.label :body, 'Your comment'
-      .question_comments_errors
-      = a.text_area :body
-    = a.submit 'Create'
+      = f.label :body, 'Your answer'
+      .answer-errors
+      = f.text_area :body
+    p
+      = link_to_add_association 'add a file', f, :attachments, partial: 'shared/attachment_fields'
+    p
+    = f.submit 'Create'
 
-.common_vote_bind
-  h2 class="vote_questions"= "Vote:"
-  .vote_questions_errors
-  .question_vote
-    p= "#{@question.rate}"
-  .question_vote_select
-    = render 'shared/vote', votable: @question
-
-p Attachments:
-
-table
-  tbody#attachments
-    =render @question.attachments
-
-.question_file
-  - if current_user&.author_of?(@question)
-      p= link_to 'Edit', '', class: 'edit-question-link-file', data: { question_id: @question.id }
-      p
-      = form_for @question, remote: true, html: { id: "edit-question_file#{@question.id}"} do |f|
-        = f.fields_for :attachments, @question.attachments.build do |file|
-          = render 'shared/attachment_fields', f: file
-        = link_to_add_association 'add a file', f, :attachments, partial: 'shared/attachment_fields' 
-        p= f.submit 'Save'
-
-h2= "Answers:"
-
-.notice
-.answers
-  =render @question.answers.order("best DESC")
-  
-= form_for [@question, @answer], remote: true, data: { format: :json } do |f|
-  p
-    = f.label :body, 'Your answer'
-    .answer-errors
-    = f.text_area :body
-  p
-    = link_to_add_association 'add a file', f, :attachments, partial: 'shared/attachment_fields'
-  p
-  = f.submit 'Create'
-
-p= link_to 'Back', root_path
+  p= link_to 'Back', root_path
 

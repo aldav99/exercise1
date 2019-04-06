@@ -16,7 +16,7 @@ set :deploy_user, 'deployer'
 
 
 # Default value for :linked_files is []
-append :linked_files, "config/database.yml", "config/master.key", "config/sidekiq.yml", "config/thinking_sphinx.yml"
+append :linked_files, "config/database.yml", "config/master.key", "config/sidekiq.yml", "config/cable.yml", "config/thinking_sphinx.yml"
 
 # Default value for linked_dirs is []
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", 'vendor/bundle', "public/uploads", "db"

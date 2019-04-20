@@ -13,7 +13,11 @@
 #   rake "some:great:rake:task"
 # end
 #
-every 1.day do
+# every 1.day do
+#   runner "DailyDigestJob.perform_now"
+# end
+
+every 2.hours do
   runner "DailyDigestJob.perform_now"
 end
 

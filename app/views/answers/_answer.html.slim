@@ -20,7 +20,7 @@
       div class= "comment-answer-#{answer.id}"
         = render answer.comments, cached: true
         p= link_to 'Add comment', '', class: 'add-comment-answer', data: { answer_id: answer.id }
-        = form_for [answer, answer.comments.new], url: add_comment_answer_path(answer), html: { id: "comment-answer-#{answer.id}"}, remote: true, data: { format: :json } do |a|
+        = form_for [answer, answer.comments.new], url: add_comment_answer_path(answer), html: { id: "comment-answer-#{answer.id}", style: 'display:none'}, remote: true, data: { format: :json } do |a|
           p
             = a.label :body, 'Your comment'
             div class= "answer_comments_errors-#{answer.id}"

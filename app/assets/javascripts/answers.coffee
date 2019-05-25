@@ -23,6 +23,7 @@ add_comment_answer = ->
   $('.answers').bind 'ajax:success', (e) ->
     [data, status, xhr] = e.detail
     $('form#comment-answer-' + data.id).hide()
+    $('textarea#comment_body').val('')
     $('.add-comment-answer').show()
     $('.comment-answer-' + data.id).prepend('<p>' + data.body + '</p>')
   .bind 'ajax:error', (e) ->

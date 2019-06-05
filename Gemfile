@@ -92,7 +92,7 @@ gem 'oj_mimic_json'
 gem 'whenever'
 # gem 'daemons'
 # gem 'delayed_job_active_record'
-gem 'sidekiq', '~> 5.2.5'
+gem 'sidekiq'#, '~> 5.2.5'
 gem 'sinatra', '>= 1.3.0', require: nil
 gem 'sidetiq'
 gem 'mysql2'

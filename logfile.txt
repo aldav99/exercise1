@@ -1,0 +1,144 @@
+rvm 1.29.7 (latest) by Michal Papis, Piotr Kuczynski, Wayne E. Seguin [https://rvm.io]
+ruby-2.5.1
+ruby 2.5.1p57 (2018-03-29 revision 63029) [x86_64-linux]
+00:00 git:wrapper
+      01 mkdir -p /tmp
+    ✔ 01 deployer@78.155.207.14 0.062s
+      Uploading /tmp/git-ssh-exercise1-production-alex.sh 100.0%
+      02 chmod 700 /tmp/git-ssh-exercise1-production-alex.sh
+    ✔ 02 deployer@78.155.207.14 0.066s
+00:00 git:check
+      01 git ls-remote git@github.com:aldav99/exercise1.git HEAD
+      01 35189de33d58209d42ef8f27f49391a7b498af82	HEAD
+    ✔ 01 deployer@78.155.207.14 4.033s
+00:04 deploy:check:directories
+      01 mkdir -p /home/deployer/exercise1/shared /home/deployer/exercise1/releases
+    ✔ 01 deployer@78.155.207.14 0.023s
+00:04 deploy:check:linked_dirs
+      01 mkdir -p /home/deployer/exercise1/shared/log /home/deployer/exercise1/shared/tmp/pids /home/deployer/exercise1/shared/tmp/cache /home/deployer/exercise1/shared/tmp/sockets /home/deployer/exercise1/shared/public/system /home/deployer/exercise1/shared/vendor/bundle /home/deployer/exercise1/shared/public/uploads /home/deployer/exercise1/shared/db /home/deployer/exercise1/shared/public/assets
+    ✔ 01 deployer@78.155.207.14 0.059s
+00:04 deploy:check:make_linked_dirs
+      01 mkdir -p /home/deployer/exercise1/shared/config
+    ✔ 01 deployer@78.155.207.14 0.066s
+00:05 sidekiq:quiet
+      01 ~/.rvm/bin/rvm default do bundle exec sidekiqctl quiet /home/deployer/exercise1/shared/tmp/pids/sidekiq-0.pid
+    ✔ 01 deployer@78.155.207.14 1.107s
+00:06 git:clone
+      The repository mirror is at /home/deployer/exercise1/repo
+00:06 git:update
+      01 git remote set-url origin git@github.com:aldav99/exercise1.git
+    ✔ 01 deployer@78.155.207.14 0.064s
+      02 git remote update --prune
+      02 Fetching origin
+    ✔ 02 deployer@78.155.207.14 2.095s
+00:08 git:create_release
+      01 mkdir -p /home/deployer/exercise1/releases/20190531043014
+    ✔ 01 deployer@78.155.207.14 0.053s
+      02 git archive master | /usr/bin/env tar -x -f - -C /home/deployer/exercise1/releases/20190531043014
+      02 warning: unable to access '/home/deployer/.config/git/attributes': Permission denied
+    ✔ 02 deployer@78.155.207.14 0.110s
+00:09 deploy:set_current_revision
+      01 echo "35189de33d58209d42ef8f27f49391a7b498af82" > REVISION
+    ✔ 01 deployer@78.155.207.14 0.057s
+00:09 deploy:symlink:linked_files
+      01 mkdir -p /home/deployer/exercise1/releases/20190531043014/config
+    ✔ 01 deployer@78.155.207.14 0.077s
+      02 ln -s /home/deployer/exercise1/shared/config/database.yml /home/deployer/exercise1/releases/20190531043014/config/database.yml
+    ✔ 02 deployer@78.155.207.14 0.073s
+      03 ln -s /home/deployer/exercise1/shared/config/master.key /home/deployer/exercise1/releases/20190531043014/config/master.key
+    ✔ 03 deployer@78.155.207.14 0.062s
+      04 ln -s /home/deployer/exercise1/shared/config/sidekiq.yml /home/deployer/exercise1/releases/20190531043014/config/sidekiq.yml
+    ✔ 04 deployer@78.155.207.14 0.067s
+      05 rm /home/deployer/exercise1/releases/20190531043014/config/cable.yml
+    ✔ 05 deployer@78.155.207.14 0.057s
+      06 ln -s /home/deployer/exercise1/shared/config/cable.yml /home/deployer/exercise1/releases/20190531043014/config/cable.yml
+    ✔ 06 deployer@78.155.207.14 0.059s
+      07 ln -s /home/deployer/exercise1/shared/config/thinking_sphinx.yml /home/deployer/exercise1/releases/20190531043014/config/thinking_sphinx.yml
+    ✔ 07 deployer@78.155.207.14 0.061s
+00:10 deploy:symlink:linked_dirs
+      01 mkdir -p /home/deployer/exercise1/releases/20190531043014 /home/deployer/exercise1/releases/20190531043014/tmp /home/deployer/exercise1/releases/20190531043014/public /home/deployer/exercise1/releases/20190531043014/vendor
+    ✔ 01 deployer@78.155.207.14 0.061s
+      02 rm -rf /home/deployer/exercise1/releases/20190531043014/log
+    ✔ 02 deployer@78.155.207.14 0.153s
+      03 ln -s /home/deployer/exercise1/shared/log /home/deployer/exercise1/releases/20190531043014/log
+    ✔ 03 deployer@78.155.207.14 0.059s
+      04 ln -s /home/deployer/exercise1/shared/tmp/pids /home/deployer/exercise1/releases/20190531043014/tmp/pids
+    ✔ 04 deployer@78.155.207.14 0.060s
+      05 ln -s /home/deployer/exercise1/shared/tmp/cache /home/deployer/exercise1/releases/20190531043014/tmp/cache
+    ✔ 05 deployer@78.155.207.14 0.057s
+      06 ln -s /home/deployer/exercise1/shared/tmp/sockets /home/deployer/exercise1/releases/20190531043014/tmp/sockets
+    ✔ 06 deployer@78.155.207.14 0.056s
+      07 ln -s /home/deployer/exercise1/shared/public/system /home/deployer/exercise1/releases/20190531043014/public/system
+    ✔ 07 deployer@78.155.207.14 0.057s
+      08 ln -s /home/deployer/exercise1/shared/vendor/bundle /home/deployer/exercise1/releases/20190531043014/vendor/bundle
+    ✔ 08 deployer@78.155.207.14 0.062s
+      09 ln -s /home/deployer/exercise1/shared/public/uploads /home/deployer/exercise1/releases/20190531043014/public/uploads
+    ✔ 09 deployer@78.155.207.14 0.063s
+      10 rm -rf /home/deployer/exercise1/releases/20190531043014/db
+    ✔ 10 deployer@78.155.207.14 0.061s
+      11 ln -s /home/deployer/exercise1/shared/db /home/deployer/exercise1/releases/20190531043014/db
+    ✔ 11 deployer@78.155.207.14 0.056s
+      12 ln -s /home/deployer/exercise1/shared/public/assets /home/deployer/exercise1/releases/20190531043014/public/assets
+    ✔ 12 deployer@78.155.207.14 0.061s
+00:13 bundler:install
+      01 ~/.rvm/bin/rvm default do bundle install --path /home/deployer/exercise1/shared/bundle --jobs 4 --without development test --deployment --quiet
+      01 Warning, new version of rvm available '1.29.8', you are using older version '1.29.7'.
+      01 You can disable this warning with:    echo rvm_autoupdate_flag=0 >> ~/.rvmrc
+      01 You can enable  auto-update  with:    echo rvm_autoupdate_flag=2 >> ~/.rvmrc
+    ✔ 01 deployer@78.155.207.14 2.082s
+00:15 deploy:assets:precompile
+      01 ~/.rvm/bin/rvm default do bundle exec rake assets:precompile
+      01 DEPRECATION WARNING: Sprockets method `register_engine` is deprecated.
+      01 Please register a mime type using `register_mime_type` then
+      01 use `register_compressor` or `register_transformer`.
+      01 https://github.com/rails/sprockets/blob/master/guides/extending_sprockets.md#supporting-all-versions-of-sprockets-in-processors
+      01  (called from <main> at /home/deployer/exercise1/shared/bundle/ruby/2.5.0/gems/skim-0.10.0/lib/skim/sprockets.rb:3)
+      01 Yarn executable was not detected in the system.
+      01 Download Yarn at https://yarnpkg.com/en/docs/install
+    ✔ 01 deployer@78.155.207.14 3.705s
+00:19 deploy:assets:backup_manifest
+      01 mkdir -p /home/deployer/exercise1/releases/20190531043014/assets_manifest_backup
+    ✔ 01 deployer@78.155.207.14 0.067s
+      02 cp /home/deployer/exercise1/releases/20190531043014/public/assets/.sprockets-manifest-64246f2de83407ed7c001c865f769254.json /home/deployer/exercise1/releases/20190531043014/assets_manifest_backup
+    ✔ 02 deployer@78.155.207.14 0.064s
+00:19 deploy:migrate
+      [deploy:migrate] Run `rake db:migrate`
+00:19 deploy:migrating
+      01 ~/.rvm/bin/rvm default do bundle exec rake db:migrate
+      01 DEPRECATION WARNING: Sprockets method `register_engine` is deprecated.
+      01 Please register a mime type using `register_mime_type` then
+      01 use `register_compressor` or `register_transformer`.
+      01 https://github.com/rails/sprockets/blob/master/guides/extending_sprockets.md#supporting-all-versions-of-sprockets-in-processors
+      01  (called from <main> at /home/deployer/exercise1/shared/bundle/ruby/2.5.0/gems/skim-0.10.0/lib/skim/sprockets.rb:3)
+    ✔ 01 deployer@78.155.207.14 2.591s
+00:22 whenever:update_crontab
+      01 ~/.rvm/bin/rvm default do bundle exec whenever --update-crontab exercise1 --set environment=production --roles=app,db,web 
+      01 [write] crontab file updated
+    ✔ 01 deployer@78.155.207.14 0.893s
+00:23 sidekiq:stop
+      01 ~/.rvm/bin/rvm default do bundle exec sidekiqctl stop /home/deployer/exercise1/shared/tmp/pids/sidekiq-0.pid 10
+      01 Sidekiq shut down gracefully.
+    ✔ 01 deployer@78.155.207.14 1.903s
+00:25 deploy:symlink:release
+      01 ln -s /home/deployer/exercise1/releases/20190531043014 /home/deployer/exercise1/releases/current
+    ✔ 01 deployer@78.155.207.14 0.072s
+      02 mv /home/deployer/exercise1/releases/current /home/deployer/exercise1
+    ✔ 02 deployer@78.155.207.14 0.068s
+00:25 unicorn:start
+      unicorn is running...
+      unicorn restarting...
+      01 kill -s USR2 `cat /home/deployer/exercise1/current/tmp/pids/unicorn.pid`
+    ✔ 01 deployer@78.155.207.14 0.070s
+00:25 sidekiq:start
+      01 ~/.rvm/bin/rvm default do bundle exec sidekiq --index 0 --pidfile /home/deployer/exercise1/shared/tmp/pids/sidekiq-0.pid --environment production --logfile /home/deployer/exercise1/shared/log/sidekiq.log --config /home/deployer/exercise1/shared/config/sidekiq.yml --daemon
+      01 WARNING: PID file creation will be removed in Sidekiq 6.0, see #4045. Please use a proper process supervisor to start and manage your services
+      01 WARNING: Logfile redirection will be removed in Sidekiq 6.0, see #4045. Sidekiq will only log to STDOUT
+      01 WARNING: Daemonization mode will be removed in Sidekiq 6.0, see #4045. Please use a proper process supervisor to start and manage your services
+    ✔ 01 deployer@78.155.207.14 2.055s
+00:27 deploy:cleanup
+      Keeping 5 of 6 deployed releases on 78.155.207.14
+      01 rm -rf /home/deployer/exercise1/releases/20190505084136
+    ✔ 01 deployer@78.155.207.14 0.094s
+00:28 deploy:log_revision
+      01 echo "Branch master (at 35189de33d58209d42ef8f27f49391a7b498af82) deployed as release 20190531043014 by alex" >> /home/deployer/exercise1/revisions.log
+    ✔ 01 deployer@78.155.207.14 0.067s

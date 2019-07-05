@@ -16,7 +16,7 @@ class DailyDigestJob < ActiveJob::Base
 
     if questions.present?
       User.find_each do |user|
-        DailyMailer.digest(user, questions).deliver_later(wait: 2.minutes)
+        DailyMailer.digest(user, questions).deliver_later(wait: 23.hours)
       end
     end
   end

@@ -3,7 +3,7 @@ class NewAnswerNotificationJob < ActiveJob::Base
 
   def perform(answer)
     answer.question.subscribers.each do |subscriber|
-      AnswerNotificationMailer.notification(answer, subscriber.user).try(:deliver_later)
+      AnswerNotificationMailer.notification(answer, subscriber.user).try(:deliver_later, wait: 5.hours)
     end
   end
 end

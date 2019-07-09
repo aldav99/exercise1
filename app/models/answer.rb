@@ -22,7 +22,7 @@ class Answer < ApplicationRecord
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
-  after_create :update_reputation
+  after_commit :update_reputation, on: :create
   after_commit :send_new_answer_notification, on: :create
 
 

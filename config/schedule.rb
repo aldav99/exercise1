@@ -18,7 +18,7 @@
 # end
 
 every 2.hours do
-  runner "DailyDigestJob.perform_later"
+  runner "DailyDigestJob.perform_now"
 end
 
 every 60.minutes do

@@ -14,7 +14,7 @@ class DailyDigestJob < ActiveJob::Base
   def perform
     # questions = Question.where(created_at: Time.now.all_day).pluck(:title)
 
-    questions = Question.where(created_at: Time.now - 24.hours).pluck(:title)
+    questions = Question.where(created_at: 1.day.ago .. Time.now).pluck(:title)
 
 
     if questions.present?

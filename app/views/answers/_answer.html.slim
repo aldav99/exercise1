@@ -9,11 +9,11 @@
       p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
       p
       = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}"} do |f|
-      .answer-update-errors
-        = f.label :body, "Answer"
-        br
-        = f.text_area :body
-        = f.submit 'Save'
+        .answer-update-errors
+          = f.label :body, "Answer"
+          br
+          = f.text_area :body
+          = f.submit 'Save'
       p= link_to 'Delete answer', answer, method: :delete, data: {confirm: 'Are you sure?', remote: true}
     - if current_user&.author_of?(answer.question) && !answer.best
         p= link_to 'Best answer?', best_answer_path(answer), remote: true
